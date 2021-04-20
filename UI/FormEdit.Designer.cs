@@ -133,6 +133,7 @@ namespace UI
             this.buttonSave.TabIndex = 9;
             this.buttonSave.Text = "Save";
             this.buttonSave.UseVisualStyleBackColor = false;
+            this.buttonSave.Click += new System.EventHandler(this.buttonSave_Click);
             // 
             // groupBox1
             // 
@@ -281,6 +282,7 @@ namespace UI
             this.listBoxQuestion.Name = "listBoxQuestion";
             this.listBoxQuestion.Size = new System.Drawing.Size(295, 311);
             this.listBoxQuestion.TabIndex = 0;
+            this.listBoxQuestion.SelectedIndexChanged += new System.EventHandler(this.listBoxQuestion_SelectedIndexChanged);
             // 
             // splitContainer4
             // 
@@ -313,7 +315,6 @@ namespace UI
             this.textBoxQuestion.ScrollBars = System.Windows.Forms.ScrollBars.Both;
             this.textBoxQuestion.Size = new System.Drawing.Size(295, 92);
             this.textBoxQuestion.TabIndex = 5;
-            this.textBoxQuestion.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // buttonRemoveQuestion
             // 
@@ -326,6 +327,7 @@ namespace UI
             this.buttonRemoveQuestion.TabIndex = 11;
             this.buttonRemoveQuestion.Text = "Remove";
             this.buttonRemoveQuestion.UseVisualStyleBackColor = false;
+            this.buttonRemoveQuestion.Click += new System.EventHandler(this.buttonRemoveQuestion_Click);
             // 
             // buttonEditQuestion
             // 
@@ -338,6 +340,7 @@ namespace UI
             this.buttonEditQuestion.TabIndex = 10;
             this.buttonEditQuestion.Text = "Edit";
             this.buttonEditQuestion.UseVisualStyleBackColor = false;
+            this.buttonEditQuestion.Click += new System.EventHandler(this.buttonEditQuestion_Click);
             // 
             // numericUpDownDifficulty
             // 
@@ -356,7 +359,6 @@ namespace UI
             0,
             0});
             this.numericUpDownDifficulty.Name = "numericUpDownDifficulty";
-            this.numericUpDownDifficulty.ReadOnly = true;
             this.numericUpDownDifficulty.Size = new System.Drawing.Size(135, 22);
             this.numericUpDownDifficulty.TabIndex = 7;
             this.numericUpDownDifficulty.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
@@ -402,6 +404,7 @@ namespace UI
             this.comboBoxAnswear.Name = "comboBoxAnswear";
             this.comboBoxAnswear.Size = new System.Drawing.Size(159, 24);
             this.comboBoxAnswear.TabIndex = 8;
+            this.comboBoxAnswear.SelectedIndexChanged += new System.EventHandler(this.comboBoxAnswear_SelectedIndexChanged);
             // 
             // textBoxAnswear
             // 
@@ -414,7 +417,6 @@ namespace UI
             this.textBoxAnswear.ScrollBars = System.Windows.Forms.ScrollBars.Both;
             this.textBoxAnswear.Size = new System.Drawing.Size(225, 400);
             this.textBoxAnswear.TabIndex = 7;
-            this.textBoxAnswear.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // buttonRemoveAnswear
             // 
@@ -427,6 +429,7 @@ namespace UI
             this.buttonRemoveAnswear.TabIndex = 6;
             this.buttonRemoveAnswear.Text = "Remove";
             this.buttonRemoveAnswear.UseVisualStyleBackColor = false;
+            this.buttonRemoveAnswear.Click += new System.EventHandler(this.buttonRemoveAnswear_Click);
             // 
             // buttonEditAnswear
             // 
@@ -439,6 +442,7 @@ namespace UI
             this.buttonEditAnswear.TabIndex = 5;
             this.buttonEditAnswear.Text = "Edit";
             this.buttonEditAnswear.UseVisualStyleBackColor = false;
+            this.buttonEditAnswear.Click += new System.EventHandler(this.buttonEditAnswear_Click);
             // 
             // checkBoxIsRight
             // 
