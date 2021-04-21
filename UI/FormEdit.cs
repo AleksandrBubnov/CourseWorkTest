@@ -36,7 +36,7 @@ namespace UI
             this.DialogResult = DialogResult.Cancel;
         }
 
-        private void buttonFile_Click(object sender, EventArgs e)
+        private void buttonOpen_Click(object sender, EventArgs e)
         {
             openFileDialog1.FileName = string.Empty;
             openFileDialog1.Filter = Filter;
@@ -241,6 +241,11 @@ namespace UI
                 //    MessageBox.Show($"{CurrentDocName} => InvalidFileNameCharsExists()" + Environment.NewLine, this.Text,
                 //        MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+        }
+
+        private void exitToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            this.Close();
         }
     }
 }
