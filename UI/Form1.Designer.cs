@@ -76,7 +76,7 @@ namespace UI
             this.buttonEdit.Name = "buttonEdit";
             this.buttonEdit.Size = new System.Drawing.Size(148, 82);
             this.buttonEdit.TabIndex = 1;
-            this.buttonEdit.Text = "Edit";
+            this.buttonEdit.Text = "&Edit";
             this.buttonEdit.UseVisualStyleBackColor = false;
             this.buttonEdit.Click += new System.EventHandler(this.buttonEdit_Click);
             // 
@@ -91,17 +91,19 @@ namespace UI
             this.buttonNewTest.Name = "buttonNewTest";
             this.buttonNewTest.Size = new System.Drawing.Size(148, 82);
             this.buttonNewTest.TabIndex = 0;
-            this.buttonNewTest.Text = "New Test";
+            this.buttonNewTest.Text = "&New Test";
             this.buttonNewTest.UseVisualStyleBackColor = false;
             this.buttonNewTest.Click += new System.EventHandler(this.buttonNewTest_Click);
             // 
             // button1
             // 
+            this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.button1.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.button1.Location = new System.Drawing.Point(445, 26);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(28, 26);
             this.button1.TabIndex = 2;
+            this.button1.TabStop = false;
             this.button1.Text = "x";
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);

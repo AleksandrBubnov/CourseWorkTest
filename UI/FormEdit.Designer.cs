@@ -33,6 +33,7 @@ namespace UI
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.panel1 = new System.Windows.Forms.Panel();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.buttonBack = new System.Windows.Forms.Button();
             this.buttonSave = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.textBoxQtyQuestion = new System.Windows.Forms.TextBox();
@@ -41,7 +42,7 @@ namespace UI
             this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
-            this.buttonFile = new System.Windows.Forms.Button();
+            this.buttonOpen = new System.Windows.Forms.Button();
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.splitContainer3 = new System.Windows.Forms.SplitContainer();
@@ -59,8 +60,15 @@ namespace UI
             this.buttonEditAnswear = new System.Windows.Forms.Button();
             this.checkBoxIsRight = new System.Windows.Forms.CheckBox();
             this.label6 = new System.Windows.Forms.Label();
-            this.buttonBack = new System.Windows.Forms.Button();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
+            this.menuStrip1 = new System.Windows.Forms.MenuStrip();
+            this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.openToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.saveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+            this.backToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.buttonExit = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -82,6 +90,7 @@ namespace UI
             this.splitContainer4.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownDifficulty)).BeginInit();
             this.groupBox4.SuspendLayout();
+            this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // statusStrip1
@@ -97,9 +106,9 @@ namespace UI
             // 
             this.panel1.Controls.Add(this.splitContainer1);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel1.Location = new System.Drawing.Point(0, 0);
+            this.panel1.Location = new System.Drawing.Point(0, 24);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(784, 539);
+            this.panel1.Size = new System.Drawing.Size(784, 515);
             this.panel1.TabIndex = 1;
             // 
             // splitContainer1
@@ -113,21 +122,33 @@ namespace UI
             this.splitContainer1.Panel1.Controls.Add(this.buttonBack);
             this.splitContainer1.Panel1.Controls.Add(this.buttonSave);
             this.splitContainer1.Panel1.Controls.Add(this.groupBox1);
-            this.splitContainer1.Panel1.Controls.Add(this.buttonFile);
+            this.splitContainer1.Panel1.Controls.Add(this.buttonOpen);
             // 
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.Controls.Add(this.splitContainer2);
-            this.splitContainer1.Size = new System.Drawing.Size(784, 539);
+            this.splitContainer1.Size = new System.Drawing.Size(784, 515);
             this.splitContainer1.SplitterDistance = 232;
             this.splitContainer1.TabIndex = 0;
             // 
+            // buttonBack
+            // 
+            this.buttonBack.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.buttonBack.BackColor = System.Drawing.Color.AntiqueWhite;
+            this.buttonBack.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.buttonBack.Location = new System.Drawing.Point(12, 183);
+            this.buttonBack.Name = "buttonBack";
+            this.buttonBack.Size = new System.Drawing.Size(75, 23);
+            this.buttonBack.TabIndex = 10;
+            this.buttonBack.Text = "Back";
+            this.buttonBack.UseVisualStyleBackColor = false;
+            this.buttonBack.Click += new System.EventHandler(this.buttonBack_Click);
+            // 
             // buttonSave
             // 
-            this.buttonSave.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.buttonSave.BackColor = System.Drawing.Color.AntiqueWhite;
             this.buttonSave.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.buttonSave.Location = new System.Drawing.Point(12, 207);
+            this.buttonSave.Location = new System.Drawing.Point(98, 12);
             this.buttonSave.Name = "buttonSave";
             this.buttonSave.Size = new System.Drawing.Size(75, 23);
             this.buttonSave.TabIndex = 9;
@@ -137,8 +158,7 @@ namespace UI
             // 
             // groupBox1
             // 
-            this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
+            this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.groupBox1.Controls.Add(this.textBoxQtyQuestion);
             this.groupBox1.Controls.Add(this.textBoxTitle);
@@ -148,7 +168,7 @@ namespace UI
             this.groupBox1.Controls.Add(this.label1);
             this.groupBox1.Location = new System.Drawing.Point(12, 41);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(217, 160);
+            this.groupBox1.Size = new System.Drawing.Size(217, 136);
             this.groupBox1.TabIndex = 8;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Info";
@@ -212,17 +232,17 @@ namespace UI
             this.label1.TabIndex = 0;
             this.label1.Text = "Author";
             // 
-            // buttonFile
+            // buttonOpen
             // 
-            this.buttonFile.BackColor = System.Drawing.Color.AntiqueWhite;
-            this.buttonFile.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.buttonFile.Location = new System.Drawing.Point(12, 12);
-            this.buttonFile.Name = "buttonFile";
-            this.buttonFile.Size = new System.Drawing.Size(75, 23);
-            this.buttonFile.TabIndex = 7;
-            this.buttonFile.Text = "File";
-            this.buttonFile.UseVisualStyleBackColor = false;
-            this.buttonFile.Click += new System.EventHandler(this.buttonFile_Click);
+            this.buttonOpen.BackColor = System.Drawing.Color.AntiqueWhite;
+            this.buttonOpen.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.buttonOpen.Location = new System.Drawing.Point(12, 12);
+            this.buttonOpen.Name = "buttonOpen";
+            this.buttonOpen.Size = new System.Drawing.Size(75, 23);
+            this.buttonOpen.TabIndex = 7;
+            this.buttonOpen.Text = "Open";
+            this.buttonOpen.UseVisualStyleBackColor = false;
+            this.buttonOpen.Click += new System.EventHandler(this.buttonOpen_Click);
             // 
             // splitContainer2
             // 
@@ -238,7 +258,7 @@ namespace UI
             // splitContainer2.Panel2
             // 
             this.splitContainer2.Panel2.Controls.Add(this.groupBox4);
-            this.splitContainer2.Size = new System.Drawing.Size(548, 539);
+            this.splitContainer2.Size = new System.Drawing.Size(548, 515);
             this.splitContainer2.SplitterDistance = 305;
             this.splitContainer2.TabIndex = 0;
             // 
@@ -248,7 +268,7 @@ namespace UI
             this.groupBox2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox2.Location = new System.Drawing.Point(0, 0);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(303, 537);
+            this.groupBox2.Size = new System.Drawing.Size(303, 513);
             this.groupBox2.TabIndex = 0;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Question";
@@ -268,8 +288,8 @@ namespace UI
             // splitContainer3.Panel2
             // 
             this.splitContainer3.Panel2.Controls.Add(this.splitContainer4);
-            this.splitContainer3.Size = new System.Drawing.Size(297, 516);
-            this.splitContainer3.SplitterDistance = 313;
+            this.splitContainer3.Size = new System.Drawing.Size(297, 492);
+            this.splitContainer3.SplitterDistance = 298;
             this.splitContainer3.TabIndex = 0;
             // 
             // listBoxQuestion
@@ -280,7 +300,7 @@ namespace UI
             this.listBoxQuestion.ItemHeight = 16;
             this.listBoxQuestion.Location = new System.Drawing.Point(0, 0);
             this.listBoxQuestion.Name = "listBoxQuestion";
-            this.listBoxQuestion.Size = new System.Drawing.Size(295, 311);
+            this.listBoxQuestion.Size = new System.Drawing.Size(295, 296);
             this.listBoxQuestion.TabIndex = 0;
             this.listBoxQuestion.SelectedIndexChanged += new System.EventHandler(this.listBoxQuestion_SelectedIndexChanged);
             // 
@@ -288,6 +308,8 @@ namespace UI
             // 
             this.splitContainer4.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.splitContainer4.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitContainer4.FixedPanel = System.Windows.Forms.FixedPanel.Panel2;
+            this.splitContainer4.IsSplitterFixed = true;
             this.splitContainer4.Location = new System.Drawing.Point(0, 0);
             this.splitContainer4.Name = "splitContainer4";
             this.splitContainer4.Orientation = System.Windows.Forms.Orientation.Horizontal;
@@ -302,8 +324,8 @@ namespace UI
             this.splitContainer4.Panel2.Controls.Add(this.buttonEditQuestion);
             this.splitContainer4.Panel2.Controls.Add(this.numericUpDownDifficulty);
             this.splitContainer4.Panel2.Controls.Add(this.label5);
-            this.splitContainer4.Size = new System.Drawing.Size(297, 199);
-            this.splitContainer4.SplitterDistance = 94;
+            this.splitContainer4.Size = new System.Drawing.Size(297, 190);
+            this.splitContainer4.SplitterDistance = 89;
             this.splitContainer4.TabIndex = 0;
             // 
             // textBoxQuestion
@@ -313,7 +335,7 @@ namespace UI
             this.textBoxQuestion.Multiline = true;
             this.textBoxQuestion.Name = "textBoxQuestion";
             this.textBoxQuestion.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.textBoxQuestion.Size = new System.Drawing.Size(295, 92);
+            this.textBoxQuestion.Size = new System.Drawing.Size(295, 87);
             this.textBoxQuestion.TabIndex = 5;
             // 
             // buttonRemoveQuestion
@@ -321,7 +343,7 @@ namespace UI
             this.buttonRemoveQuestion.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.buttonRemoveQuestion.BackColor = System.Drawing.Color.AntiqueWhite;
             this.buttonRemoveQuestion.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.buttonRemoveQuestion.Location = new System.Drawing.Point(205, 55);
+            this.buttonRemoveQuestion.Location = new System.Drawing.Point(205, 51);
             this.buttonRemoveQuestion.Name = "buttonRemoveQuestion";
             this.buttonRemoveQuestion.Size = new System.Drawing.Size(75, 23);
             this.buttonRemoveQuestion.TabIndex = 11;
@@ -334,7 +356,7 @@ namespace UI
             this.buttonEditQuestion.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.buttonEditQuestion.BackColor = System.Drawing.Color.AntiqueWhite;
             this.buttonEditQuestion.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.buttonEditQuestion.Location = new System.Drawing.Point(18, 55);
+            this.buttonEditQuestion.Location = new System.Drawing.Point(18, 51);
             this.buttonEditQuestion.Name = "buttonEditQuestion";
             this.buttonEditQuestion.Size = new System.Drawing.Size(75, 23);
             this.buttonEditQuestion.TabIndex = 10;
@@ -388,7 +410,7 @@ namespace UI
             this.groupBox4.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox4.Location = new System.Drawing.Point(0, 0);
             this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Size = new System.Drawing.Size(237, 537);
+            this.groupBox4.Size = new System.Drawing.Size(237, 513);
             this.groupBox4.TabIndex = 1;
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "Answear";
@@ -415,7 +437,7 @@ namespace UI
             this.textBoxAnswear.Multiline = true;
             this.textBoxAnswear.Name = "textBoxAnswear";
             this.textBoxAnswear.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.textBoxAnswear.Size = new System.Drawing.Size(225, 400);
+            this.textBoxAnswear.Size = new System.Drawing.Size(225, 376);
             this.textBoxAnswear.TabIndex = 7;
             // 
             // buttonRemoveAnswear
@@ -423,7 +445,7 @@ namespace UI
             this.buttonRemoveAnswear.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.buttonRemoveAnswear.BackColor = System.Drawing.Color.AntiqueWhite;
             this.buttonRemoveAnswear.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.buttonRemoveAnswear.Location = new System.Drawing.Point(132, 489);
+            this.buttonRemoveAnswear.Location = new System.Drawing.Point(132, 465);
             this.buttonRemoveAnswear.Name = "buttonRemoveAnswear";
             this.buttonRemoveAnswear.Size = new System.Drawing.Size(99, 23);
             this.buttonRemoveAnswear.TabIndex = 6;
@@ -436,7 +458,7 @@ namespace UI
             this.buttonEditAnswear.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.buttonEditAnswear.BackColor = System.Drawing.Color.AntiqueWhite;
             this.buttonEditAnswear.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.buttonEditAnswear.Location = new System.Drawing.Point(9, 489);
+            this.buttonEditAnswear.Location = new System.Drawing.Point(9, 465);
             this.buttonEditAnswear.Name = "buttonEditAnswear";
             this.buttonEditAnswear.Size = new System.Drawing.Size(99, 23);
             this.buttonEditAnswear.TabIndex = 5;
@@ -463,34 +485,106 @@ namespace UI
             this.label6.TabIndex = 2;
             this.label6.Text = "Answear";
             // 
-            // buttonBack
-            // 
-            this.buttonBack.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonBack.BackColor = System.Drawing.Color.AntiqueWhite;
-            this.buttonBack.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.buttonBack.Location = new System.Drawing.Point(148, 207);
-            this.buttonBack.Name = "buttonBack";
-            this.buttonBack.Size = new System.Drawing.Size(75, 23);
-            this.buttonBack.TabIndex = 10;
-            this.buttonBack.Text = "Back";
-            this.buttonBack.UseVisualStyleBackColor = false;
-            this.buttonBack.Click += new System.EventHandler(this.buttonBack_Click);
-            // 
             // openFileDialog1
             // 
             this.openFileDialog1.FileName = "openFileDialog1";
+            // 
+            // menuStrip1
+            // 
+            this.menuStrip1.BackColor = System.Drawing.Color.Transparent;
+            this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.fileToolStripMenuItem});
+            this.menuStrip1.Location = new System.Drawing.Point(0, 0);
+            this.menuStrip1.Name = "menuStrip1";
+            this.menuStrip1.Size = new System.Drawing.Size(784, 24);
+            this.menuStrip1.TabIndex = 2;
+            this.menuStrip1.Text = "menuStrip1";
+            // 
+            // fileToolStripMenuItem
+            // 
+            this.fileToolStripMenuItem.BackColor = System.Drawing.Color.Transparent;
+            this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.openToolStripMenuItem,
+            this.saveToolStripMenuItem,
+            this.toolStripSeparator1,
+            this.backToolStripMenuItem,
+            this.exitToolStripMenuItem});
+            this.fileToolStripMenuItem.ImageTransparentColor = System.Drawing.Color.Transparent;
+            this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
+            this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
+            this.fileToolStripMenuItem.Text = "&File";
+            // 
+            // openToolStripMenuItem
+            // 
+            this.openToolStripMenuItem.BackColor = System.Drawing.Color.Wheat;
+            this.openToolStripMenuItem.Name = "openToolStripMenuItem";
+            this.openToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.O)));
+            this.openToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.openToolStripMenuItem.Text = "&Open";
+            this.openToolStripMenuItem.Click += new System.EventHandler(this.buttonOpen_Click);
+            // 
+            // saveToolStripMenuItem
+            // 
+            this.saveToolStripMenuItem.BackColor = System.Drawing.Color.Wheat;
+            this.saveToolStripMenuItem.Name = "saveToolStripMenuItem";
+            this.saveToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S)));
+            this.saveToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.saveToolStripMenuItem.Text = "&Save";
+            this.saveToolStripMenuItem.Click += new System.EventHandler(this.buttonSave_Click);
+            // 
+            // toolStripSeparator1
+            // 
+            this.toolStripSeparator1.BackColor = System.Drawing.Color.Orange;
+            this.toolStripSeparator1.ForeColor = System.Drawing.Color.Orange;
+            this.toolStripSeparator1.Name = "toolStripSeparator1";
+            this.toolStripSeparator1.Size = new System.Drawing.Size(177, 6);
+            // 
+            // backToolStripMenuItem
+            // 
+            this.backToolStripMenuItem.BackColor = System.Drawing.Color.AntiqueWhite;
+            this.backToolStripMenuItem.Name = "backToolStripMenuItem";
+            this.backToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Z)));
+            this.backToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.backToolStripMenuItem.Text = "Back";
+            this.backToolStripMenuItem.Click += new System.EventHandler(this.buttonBack_Click);
+            // 
+            // exitToolStripMenuItem
+            // 
+            this.exitToolStripMenuItem.BackColor = System.Drawing.Color.Red;
+            this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
+            this.exitToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Q)));
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.exitToolStripMenuItem.Text = "Exit";
+            this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
+            // 
+            // buttonExit
+            // 
+            this.buttonExit.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.buttonExit.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            this.buttonExit.Location = new System.Drawing.Point(764, 0);
+            this.buttonExit.Name = "buttonExit";
+            this.buttonExit.Size = new System.Drawing.Size(20, 20);
+            this.buttonExit.TabIndex = 11;
+            this.buttonExit.TabStop = false;
+            this.buttonExit.Text = "X";
+            this.buttonExit.UseVisualStyleBackColor = true;
+            this.buttonExit.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
             // 
             // FormEdit
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Info;
+            this.CancelButton = this.buttonExit;
             this.ClientSize = new System.Drawing.Size(784, 561);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.statusStrip1);
+            this.Controls.Add(this.menuStrip1);
+            this.Controls.Add(this.buttonExit);
             this.DoubleBuffered = true;
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.MainMenuStrip = this.menuStrip1;
             this.Margin = new System.Windows.Forms.Padding(4);
             this.MinimumSize = new System.Drawing.Size(800, 600);
             this.Name = "FormEdit";
@@ -524,6 +618,8 @@ namespace UI
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownDifficulty)).EndInit();
             this.groupBox4.ResumeLayout(false);
             this.groupBox4.PerformLayout();
+            this.menuStrip1.ResumeLayout(false);
+            this.menuStrip1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -535,7 +631,7 @@ namespace UI
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.SplitContainer splitContainer1;
         private System.Windows.Forms.SplitContainer splitContainer2;
-        private System.Windows.Forms.Button buttonFile;
+        private System.Windows.Forms.Button buttonOpen;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.TextBox textBoxQtyQuestion;
         private System.Windows.Forms.TextBox textBoxTitle;
@@ -562,5 +658,13 @@ namespace UI
         private System.Windows.Forms.ComboBox comboBoxAnswear;
         private System.Windows.Forms.Button buttonBack;
         private System.Windows.Forms.OpenFileDialog openFileDialog1;
+        private System.Windows.Forms.MenuStrip menuStrip1;
+        private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem openToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem saveToolStripMenuItem;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
+        private System.Windows.Forms.ToolStripMenuItem backToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem exitToolStripMenuItem;
+        private System.Windows.Forms.Button buttonExit;
     }
 }

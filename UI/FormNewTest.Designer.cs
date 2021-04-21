@@ -43,6 +43,7 @@ namespace UI
             this.label1 = new System.Windows.Forms.Label();
             this.splitContainer3 = new System.Windows.Forms.SplitContainer();
             this.groupBoxAnswear = new System.Windows.Forms.GroupBox();
+            this.listBoxAnswear = new System.Windows.Forms.ListBox();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
             this.comboBoxAnswear = new System.Windows.Forms.ComboBox();
             this.buttonOkChooseAnswear = new System.Windows.Forms.Button();
@@ -63,7 +64,6 @@ namespace UI
             this.buttonBack = new System.Windows.Forms.Button();
             this.buttonSave = new System.Windows.Forms.Button();
             this.textBoxSave = new System.Windows.Forms.TextBox();
-            this.listBoxAnswear = new System.Windows.Forms.ListBox();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -262,6 +262,17 @@ namespace UI
             this.groupBoxAnswear.TabStop = false;
             this.groupBoxAnswear.Text = "Answear";
             // 
+            // listBoxAnswear
+            // 
+            this.listBoxAnswear.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.listBoxAnswear.FormattingEnabled = true;
+            this.listBoxAnswear.HorizontalScrollbar = true;
+            this.listBoxAnswear.ItemHeight = 16;
+            this.listBoxAnswear.Location = new System.Drawing.Point(3, 18);
+            this.listBoxAnswear.Name = "listBoxAnswear";
+            this.listBoxAnswear.Size = new System.Drawing.Size(228, 179);
+            this.listBoxAnswear.TabIndex = 0;
+            // 
             // groupBox5
             // 
             this.groupBox5.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
@@ -345,6 +356,7 @@ namespace UI
             this.groupBox3.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox3.Controls.Add(this.buttonNextQuestion);
             this.groupBox3.Controls.Add(this.numericUpDownDifficulty);
             this.groupBox3.Controls.Add(this.buttonAddQuestion);
             this.groupBox3.Controls.Add(this.textBoxQuestion);
@@ -392,7 +404,7 @@ namespace UI
             this.buttonAddQuestion.Name = "buttonAddQuestion";
             this.buttonAddQuestion.Size = new System.Drawing.Size(120, 23);
             this.buttonAddQuestion.TabIndex = 4;
-            this.buttonAddQuestion.Text = "Add Question";
+            this.buttonAddQuestion.Text = "Add &Question";
             this.buttonAddQuestion.UseVisualStyleBackColor = false;
             this.buttonAddQuestion.Click += new System.EventHandler(this.buttonAddQuestion_Click);
             // 
@@ -433,7 +445,6 @@ namespace UI
             this.groupBox4.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.groupBox4.Controls.Add(this.buttonNextQuestion);
             this.groupBox4.Controls.Add(this.buttonAddAnswear);
             this.groupBox4.Controls.Add(this.textBoxAnswear);
             this.groupBox4.Controls.Add(this.checkBoxIsRight);
@@ -451,11 +462,11 @@ namespace UI
             this.buttonNextQuestion.BackColor = System.Drawing.Color.AntiqueWhite;
             this.buttonNextQuestion.Enabled = false;
             this.buttonNextQuestion.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.buttonNextQuestion.Location = new System.Drawing.Point(233, 115);
+            this.buttonNextQuestion.Location = new System.Drawing.Point(236, 178);
             this.buttonNextQuestion.Name = "buttonNextQuestion";
             this.buttonNextQuestion.Size = new System.Drawing.Size(120, 23);
             this.buttonNextQuestion.TabIndex = 6;
-            this.buttonNextQuestion.Text = "Next Question";
+            this.buttonNextQuestion.Text = "&Next Question";
             this.buttonNextQuestion.UseVisualStyleBackColor = false;
             this.buttonNextQuestion.Click += new System.EventHandler(this.buttonNextQuestion_Click);
             // 
@@ -469,7 +480,7 @@ namespace UI
             this.buttonAddAnswear.Name = "buttonAddAnswear";
             this.buttonAddAnswear.Size = new System.Drawing.Size(120, 23);
             this.buttonAddAnswear.TabIndex = 5;
-            this.buttonAddAnswear.Text = "Add Answear";
+            this.buttonAddAnswear.Text = "Add &Answear";
             this.buttonAddAnswear.UseVisualStyleBackColor = false;
             this.buttonAddAnswear.Click += new System.EventHandler(this.buttonAddAnswear_Click);
             // 
@@ -514,7 +525,7 @@ namespace UI
             this.buttonBack.Name = "buttonBack";
             this.buttonBack.Size = new System.Drawing.Size(75, 23);
             this.buttonBack.TabIndex = 6;
-            this.buttonBack.Text = "Back";
+            this.buttonBack.Text = "&Back";
             this.buttonBack.UseVisualStyleBackColor = false;
             this.buttonBack.Click += new System.EventHandler(this.buttonBack_Click);
             // 
@@ -527,7 +538,7 @@ namespace UI
             this.buttonSave.Name = "buttonSave";
             this.buttonSave.Size = new System.Drawing.Size(75, 23);
             this.buttonSave.TabIndex = 5;
-            this.buttonSave.Text = "Save";
+            this.buttonSave.Text = "&Save";
             this.buttonSave.UseVisualStyleBackColor = false;
             this.buttonSave.Click += new System.EventHandler(this.buttonSave_Click);
             // 
@@ -542,17 +553,6 @@ namespace UI
             this.textBoxSave.Size = new System.Drawing.Size(435, 22);
             this.textBoxSave.TabIndex = 4;
             this.textBoxSave.TextChanged += new System.EventHandler(this.textBox_TextChanged);
-            // 
-            // listBoxAnswear
-            // 
-            this.listBoxAnswear.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.listBoxAnswear.FormattingEnabled = true;
-            this.listBoxAnswear.HorizontalScrollbar = true;
-            this.listBoxAnswear.ItemHeight = 16;
-            this.listBoxAnswear.Location = new System.Drawing.Point(3, 18);
-            this.listBoxAnswear.Name = "listBoxAnswear";
-            this.listBoxAnswear.Size = new System.Drawing.Size(228, 179);
-            this.listBoxAnswear.TabIndex = 0;
             // 
             // FormNewTest
             // 
