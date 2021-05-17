@@ -262,9 +262,6 @@ namespace TestServerApp
             this.panelConnectionString.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
-
-
-
         }
 
         #endregion InitializeNewComponent
@@ -295,8 +292,9 @@ namespace TestServerApp
             InitializeComponent();
             InitializeNewComponent();
 
-            //string currentDir = Directory.GetCurrentDirectory();
-            string currentDir = Directory.GetParent(Directory.GetParent(Directory.GetCurrentDirectory())?.FullName)?.FullName;
+            this.Text = "Server";
+            string currentDir = Directory.GetCurrentDirectory();
+            //string currentDir = Directory.GetParent(Directory.GetParent(Directory.GetCurrentDirectory())?.FullName)?.FullName;
             textBoxConnectionString.Text =
                 @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=" +
                 currentDir +
@@ -403,6 +401,5 @@ namespace TestServerApp
             panelConnectionString.Visible = false;
             groupBoxServer.Visible = true;
         }
-
     }
 }

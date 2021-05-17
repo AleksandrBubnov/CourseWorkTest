@@ -5,6 +5,11 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
+using System.Net;
+using System.Net.Sockets;
+using System.Runtime.Serialization.Formatters.Binary;
+using System.Text;
+using System.Threading;
 using System.Xml.Serialization;
 
 namespace TestServerApp
@@ -114,6 +119,15 @@ namespace TestServerApp
         private System.Windows.Forms.Panel panelFilterTest;
         private System.Windows.Forms.Label label22;
         private System.Windows.Forms.ComboBox comboBoxTestTitle;
+        private System.Windows.Forms.Panel panelServerSettings;
+        private System.Windows.Forms.TextBox textBoxPortNumber;
+        private System.Windows.Forms.Label label25;
+        private System.Windows.Forms.Label label26;
+        private System.Windows.Forms.Button buttonStop;
+        private System.Windows.Forms.Button buttonStart;
+        private System.Windows.Forms.TextBox textBoxHostName;
+        private System.Windows.Forms.Label label27;
+        private System.Windows.Forms.NumericUpDown numericUpDownNIC;
 
         private void InitializeNewComponent()
         {
@@ -138,6 +152,18 @@ namespace TestServerApp
             this.labelSelected = new System.Windows.Forms.Label();
             this.splitContainerDG = new System.Windows.Forms.SplitContainer();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
+            this.panelServerSettings = new System.Windows.Forms.Panel();
+            this.numericUpDownNIC = new System.Windows.Forms.NumericUpDown();
+            this.textBoxPortNumber = new System.Windows.Forms.TextBox();
+            this.label25 = new System.Windows.Forms.Label();
+            this.label26 = new System.Windows.Forms.Label();
+            this.buttonStop = new System.Windows.Forms.Button();
+            this.buttonStart = new System.Windows.Forms.Button();
+            this.textBoxHostName = new System.Windows.Forms.TextBox();
+            this.label27 = new System.Windows.Forms.Label();
+            this.panelFilterTest = new System.Windows.Forms.Panel();
+            this.label22 = new System.Windows.Forms.Label();
+            this.comboBoxTestTitle = new System.Windows.Forms.ComboBox();
             this.panelAddUser = new System.Windows.Forms.Panel();
             this.checkBoxIsAdminAddUser = new System.Windows.Forms.CheckBox();
             this.textBoxConfPaswAddUser = new System.Windows.Forms.TextBox();
@@ -216,9 +242,6 @@ namespace TestServerApp
             this.panelShowAllGroup = new System.Windows.Forms.Panel();
             this.buttonRemoveGroup = new System.Windows.Forms.Button();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
-            this.panelFilterTest = new System.Windows.Forms.Panel();
-            this.comboBoxTestTitle = new System.Windows.Forms.ComboBox();
-            this.label22 = new System.Windows.Forms.Label();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -237,6 +260,9 @@ namespace TestServerApp
             this.splitContainerDG.Panel2.SuspendLayout();
             this.splitContainerDG.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
+            this.panelServerSettings.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownNIC)).BeginInit();
+            this.panelFilterTest.SuspendLayout();
             this.panelAddUser.SuspendLayout();
             this.panelTestFoGroup.SuspendLayout();
             this.panelShowTests.SuspendLayout();
@@ -254,7 +280,6 @@ namespace TestServerApp
             this.panelAddNewUser.SuspendLayout();
             this.panelAddGroup.SuspendLayout();
             this.panelShowAllGroup.SuspendLayout();
-            this.panelFilterTest.SuspendLayout();
             this.SuspendLayout();
             // 
             // statusStrip1
@@ -552,6 +577,7 @@ namespace TestServerApp
             // splitContainerDG.Panel2
             // 
             this.splitContainerDG.Panel2.AutoScroll = true;
+            this.splitContainerDG.Panel2.Controls.Add(this.panelServerSettings);
             this.splitContainerDG.Panel2.Controls.Add(this.panelFilterTest);
             this.splitContainerDG.Panel2.Controls.Add(this.panelAddUser);
             this.splitContainerDG.Panel2.Controls.Add(this.panelTestFoGroup);
@@ -573,17 +599,158 @@ namespace TestServerApp
             // 
             // dataGridView1
             // 
+            this.dataGridView1.AllowUserToOrderColumns = true;
+            this.dataGridView1.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dataGridView1.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(20)))), ((int)(((byte)(30)))));
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dataGridView1.GridColor = System.Drawing.SystemColors.ActiveCaption;
             this.dataGridView1.Location = new System.Drawing.Point(0, 0);
+            this.dataGridView1.MinimumSize = new System.Drawing.Size(490, 176);
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.ReadOnly = true;
             this.dataGridView1.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dataGridView1.Size = new System.Drawing.Size(148, 266);
+            this.dataGridView1.Size = new System.Drawing.Size(490, 266);
             this.dataGridView1.TabIndex = 2;
             this.dataGridView1.SelectionChanged += new System.EventHandler(this.dataGridView1_SelectionChanged);
+            // 
+            // panelServerSettings
+            // 
+            this.panelServerSettings.Controls.Add(this.numericUpDownNIC);
+            this.panelServerSettings.Controls.Add(this.textBoxPortNumber);
+            this.panelServerSettings.Controls.Add(this.label25);
+            this.panelServerSettings.Controls.Add(this.label26);
+            this.panelServerSettings.Controls.Add(this.buttonStop);
+            this.panelServerSettings.Controls.Add(this.buttonStart);
+            this.panelServerSettings.Controls.Add(this.textBoxHostName);
+            this.panelServerSettings.Controls.Add(this.label27);
+            this.panelServerSettings.Dock = System.Windows.Forms.DockStyle.Top;
+            this.panelServerSettings.Location = new System.Drawing.Point(0, 1527);
+            this.panelServerSettings.Name = "panelServerSettings";
+            this.panelServerSettings.Size = new System.Drawing.Size(493, 167);
+            this.panelServerSettings.TabIndex = 19;
+            this.panelServerSettings.Visible = false;
+            // 
+            // numericUpDownNIC
+            // 
+            this.numericUpDownNIC.Location = new System.Drawing.Point(142, 77);
+            this.numericUpDownNIC.Name = "numericUpDownNIC";
+            this.numericUpDownNIC.ReadOnly = true;
+            this.numericUpDownNIC.Size = new System.Drawing.Size(75, 21);
+            this.numericUpDownNIC.TabIndex = 22;
+            this.numericUpDownNIC.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.numericUpDownNIC.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.numericUpDownNIC.Visible = false;
+            // 
+            // textBoxPortNumber
+            // 
+            this.textBoxPortNumber.Location = new System.Drawing.Point(142, 49);
+            this.textBoxPortNumber.Name = "textBoxPortNumber";
+            this.textBoxPortNumber.Size = new System.Drawing.Size(341, 21);
+            this.textBoxPortNumber.TabIndex = 2;
+            this.textBoxPortNumber.Text = "33000";
+            this.textBoxPortNumber.TextChanged += new System.EventHandler(this.textBoxHostName_TextChanged);
+            // 
+            // label25
+            // 
+            this.label25.AutoSize = true;
+            this.label25.Location = new System.Drawing.Point(13, 80);
+            this.label25.Name = "label25";
+            this.label25.Size = new System.Drawing.Size(73, 15);
+            this.label25.TabIndex = 5;
+            this.label25.Text = "NIC (from 0)";
+            this.label25.Visible = false;
+            // 
+            // label26
+            // 
+            this.label26.AutoSize = true;
+            this.label26.Location = new System.Drawing.Point(10, 52);
+            this.label26.Name = "label26";
+            this.label26.Size = new System.Drawing.Size(75, 15);
+            this.label26.TabIndex = 4;
+            this.label26.Text = "Port number";
+            // 
+            // buttonStop
+            // 
+            this.buttonStop.AutoSize = true;
+            this.buttonStop.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
+            this.buttonStop.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.buttonStop.Location = new System.Drawing.Point(384, 128);
+            this.buttonStop.Name = "buttonStop";
+            this.buttonStop.Size = new System.Drawing.Size(99, 25);
+            this.buttonStop.TabIndex = 8;
+            this.buttonStop.Text = "Stop";
+            this.buttonStop.UseVisualStyleBackColor = false;
+            this.buttonStop.Click += new System.EventHandler(this.buttonStop_Click);
+            // 
+            // buttonStart
+            // 
+            this.buttonStart.AutoSize = true;
+            this.buttonStart.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
+            this.buttonStart.Enabled = false;
+            this.buttonStart.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.buttonStart.Location = new System.Drawing.Point(142, 128);
+            this.buttonStart.Name = "buttonStart";
+            this.buttonStart.Size = new System.Drawing.Size(99, 25);
+            this.buttonStart.TabIndex = 7;
+            this.buttonStart.Text = "Start";
+            this.buttonStart.UseVisualStyleBackColor = false;
+            this.buttonStart.Click += new System.EventHandler(this.buttonStart_Click);
+            // 
+            // textBoxHostName
+            // 
+            this.textBoxHostName.Location = new System.Drawing.Point(142, 21);
+            this.textBoxHostName.Name = "textBoxHostName";
+            this.textBoxHostName.ReadOnly = true;
+            this.textBoxHostName.Size = new System.Drawing.Size(341, 21);
+            this.textBoxHostName.TabIndex = 1;
+            this.textBoxHostName.Text = "127.0.0.1";
+            this.textBoxHostName.TextChanged += new System.EventHandler(this.textBoxHostName_TextChanged);
+            // 
+            // label27
+            // 
+            this.label27.AutoSize = true;
+            this.label27.Location = new System.Drawing.Point(10, 24);
+            this.label27.Name = "label27";
+            this.label27.Size = new System.Drawing.Size(90, 15);
+            this.label27.TabIndex = 0;
+            this.label27.Text = "Host IPAddress";
+            // 
+            // panelFilterTest
+            // 
+            this.panelFilterTest.Controls.Add(this.label22);
+            this.panelFilterTest.Controls.Add(this.comboBoxTestTitle);
+            this.panelFilterTest.Dock = System.Windows.Forms.DockStyle.Top;
+            this.panelFilterTest.Location = new System.Drawing.Point(0, 1487);
+            this.panelFilterTest.Name = "panelFilterTest";
+            this.panelFilterTest.Size = new System.Drawing.Size(493, 40);
+            this.panelFilterTest.TabIndex = 18;
+            this.panelFilterTest.Visible = false;
+            // 
+            // label22
+            // 
+            this.label22.AutoSize = true;
+            this.label22.Location = new System.Drawing.Point(10, 14);
+            this.label22.Name = "label22";
+            this.label22.Size = new System.Drawing.Size(52, 15);
+            this.label22.TabIndex = 1;
+            this.label22.Text = "Test title";
+            // 
+            // comboBoxTestTitle
+            // 
+            this.comboBoxTestTitle.BackColor = System.Drawing.SystemColors.Info;
+            this.comboBoxTestTitle.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBoxTestTitle.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.comboBoxTestTitle.FormattingEnabled = true;
+            this.comboBoxTestTitle.Location = new System.Drawing.Point(142, 10);
+            this.comboBoxTestTitle.Name = "comboBoxTestTitle";
+            this.comboBoxTestTitle.Size = new System.Drawing.Size(341, 23);
+            this.comboBoxTestTitle.TabIndex = 0;
+            this.comboBoxTestTitle.SelectedIndexChanged += new System.EventHandler(this.comboBoxTestTitle_SelectedIndexChanged);
             // 
             // panelAddUser
             // 
@@ -619,8 +786,6 @@ namespace TestServerApp
             // 
             // textBoxConfPaswAddUser
             // 
-            this.textBoxConfPaswAddUser.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.textBoxConfPaswAddUser.Location = new System.Drawing.Point(142, 133);
             this.textBoxConfPaswAddUser.Name = "textBoxConfPaswAddUser";
             this.textBoxConfPaswAddUser.Size = new System.Drawing.Size(341, 21);
@@ -629,8 +794,6 @@ namespace TestServerApp
             // 
             // textBoxPasswAddUser
             // 
-            this.textBoxPasswAddUser.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.textBoxPasswAddUser.Location = new System.Drawing.Point(142, 105);
             this.textBoxPasswAddUser.Name = "textBoxPasswAddUser";
             this.textBoxPasswAddUser.Size = new System.Drawing.Size(341, 21);
@@ -639,8 +802,6 @@ namespace TestServerApp
             // 
             // textBoxLoginAddUser
             // 
-            this.textBoxLoginAddUser.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.textBoxLoginAddUser.Location = new System.Drawing.Point(142, 77);
             this.textBoxLoginAddUser.Name = "textBoxLoginAddUser";
             this.textBoxLoginAddUser.Size = new System.Drawing.Size(341, 21);
@@ -649,8 +810,6 @@ namespace TestServerApp
             // 
             // textBoxLNAddUser
             // 
-            this.textBoxLNAddUser.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.textBoxLNAddUser.Location = new System.Drawing.Point(142, 49);
             this.textBoxLNAddUser.Name = "textBoxLNAddUser";
             this.textBoxLNAddUser.Size = new System.Drawing.Size(341, 21);
@@ -695,7 +854,6 @@ namespace TestServerApp
             // 
             // buttonCanselAddUser
             // 
-            this.buttonCanselAddUser.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.buttonCanselAddUser.AutoSize = true;
             this.buttonCanselAddUser.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
             this.buttonCanselAddUser.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
@@ -723,8 +881,6 @@ namespace TestServerApp
             // 
             // textBoxFNAddUser
             // 
-            this.textBoxFNAddUser.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.textBoxFNAddUser.Location = new System.Drawing.Point(142, 21);
             this.textBoxFNAddUser.Name = "textBoxFNAddUser";
             this.textBoxFNAddUser.Size = new System.Drawing.Size(341, 21);
@@ -754,15 +910,13 @@ namespace TestServerApp
             // 
             // comboBoxTestFoGroup
             // 
-            this.comboBoxTestFoGroup.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.comboBoxTestFoGroup.BackColor = System.Drawing.SystemColors.Info;
             this.comboBoxTestFoGroup.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBoxTestFoGroup.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.comboBoxTestFoGroup.FormattingEnabled = true;
-            this.comboBoxTestFoGroup.Location = new System.Drawing.Point(115, 20);
+            this.comboBoxTestFoGroup.Location = new System.Drawing.Point(142, 20);
             this.comboBoxTestFoGroup.Name = "comboBoxTestFoGroup";
-            this.comboBoxTestFoGroup.Size = new System.Drawing.Size(368, 23);
+            this.comboBoxTestFoGroup.Size = new System.Drawing.Size(341, 23);
             this.comboBoxTestFoGroup.TabIndex = 4;
             this.comboBoxTestFoGroup.SelectedIndexChanged += new System.EventHandler(this.comboBoxTestFoGroup_SelectedIndexChanged);
             // 
@@ -849,7 +1003,6 @@ namespace TestServerApp
             // 
             // buttonlCanselUpgradeGroup
             // 
-            this.buttonlCanselUpgradeGroup.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.buttonlCanselUpgradeGroup.AutoSize = true;
             this.buttonlCanselUpgradeGroup.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
             this.buttonlCanselUpgradeGroup.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
@@ -866,7 +1019,7 @@ namespace TestServerApp
             this.buttonlUpgradeGroup.AutoSize = true;
             this.buttonlUpgradeGroup.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
             this.buttonlUpgradeGroup.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.buttonlUpgradeGroup.Location = new System.Drawing.Point(83, 57);
+            this.buttonlUpgradeGroup.Location = new System.Drawing.Point(142, 57);
             this.buttonlUpgradeGroup.Name = "buttonlUpgradeGroup";
             this.buttonlUpgradeGroup.Size = new System.Drawing.Size(100, 25);
             this.buttonlUpgradeGroup.TabIndex = 2;
@@ -876,11 +1029,9 @@ namespace TestServerApp
             // 
             // textBoxUpgradeGroup
             // 
-            this.textBoxUpgradeGroup.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBoxUpgradeGroup.Location = new System.Drawing.Point(83, 21);
+            this.textBoxUpgradeGroup.Location = new System.Drawing.Point(142, 21);
             this.textBoxUpgradeGroup.Name = "textBoxUpgradeGroup";
-            this.textBoxUpgradeGroup.Size = new System.Drawing.Size(400, 21);
+            this.textBoxUpgradeGroup.Size = new System.Drawing.Size(341, 21);
             this.textBoxUpgradeGroup.TabIndex = 1;
             this.textBoxUpgradeGroup.TextChanged += new System.EventHandler(this.textBoxName_TextChanged);
             // 
@@ -915,33 +1066,34 @@ namespace TestServerApp
             this.panel2.Controls.Add(this.dataGridView2);
             this.panel2.Location = new System.Drawing.Point(0, 49);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(527, 151);
+            this.panel2.Size = new System.Drawing.Size(629, 151);
             this.panel2.TabIndex = 5;
             // 
             // dataGridView2
             // 
+            this.dataGridView2.AllowUserToOrderColumns = true;
+            this.dataGridView2.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dataGridView2.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(20)))), ((int)(((byte)(30)))));
             this.dataGridView2.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dataGridView2.GridColor = System.Drawing.SystemColors.ActiveCaption;
             this.dataGridView2.Location = new System.Drawing.Point(0, 0);
+            this.dataGridView2.MinimumSize = new System.Drawing.Size(490, 176);
             this.dataGridView2.Name = "dataGridView2";
             this.dataGridView2.ReadOnly = true;
             this.dataGridView2.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dataGridView2.Size = new System.Drawing.Size(527, 151);
+            this.dataGridView2.Size = new System.Drawing.Size(629, 176);
             this.dataGridView2.TabIndex = 3;
             // 
             // comboBox3
             // 
-            this.comboBox3.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.comboBox3.BackColor = System.Drawing.SystemColors.Info;
             this.comboBox3.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBox3.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.comboBox3.FormattingEnabled = true;
-            this.comboBox3.Location = new System.Drawing.Point(115, 20);
+            this.comboBox3.Location = new System.Drawing.Point(142, 20);
             this.comboBox3.Name = "comboBox3";
-            this.comboBox3.Size = new System.Drawing.Size(368, 23);
+            this.comboBox3.Size = new System.Drawing.Size(341, 23);
             this.comboBox3.TabIndex = 4;
             this.comboBox3.SelectedIndexChanged += new System.EventHandler(this.comboBox3_SelectedIndexChanged);
             // 
@@ -981,9 +1133,6 @@ namespace TestServerApp
             // 
             // groupBoxServer
             // 
-            this.groupBoxServer.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-            | System.Windows.Forms.AnchorStyles.Left)
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.groupBoxServer.Controls.Add(this.numericUpDownMinute);
             this.groupBoxServer.Controls.Add(this.numericUpDownHour);
             this.groupBoxServer.Controls.Add(this.label13);
@@ -1002,7 +1151,7 @@ namespace TestServerApp
             this.groupBoxServer.ForeColor = System.Drawing.SystemColors.Control;
             this.groupBoxServer.Location = new System.Drawing.Point(10, 45);
             this.groupBoxServer.Name = "groupBoxServer";
-            this.groupBoxServer.Size = new System.Drawing.Size(473, 176);
+            this.groupBoxServer.Size = new System.Drawing.Size(490, 176);
             this.groupBoxServer.TabIndex = 14;
             this.groupBoxServer.TabStop = false;
             this.groupBoxServer.Text = "Info";
@@ -1023,7 +1172,7 @@ namespace TestServerApp
             // 
             // numericUpDownHour
             // 
-            this.numericUpDownHour.Location = new System.Drawing.Point(122, 105);
+            this.numericUpDownHour.Location = new System.Drawing.Point(132, 105);
             this.numericUpDownHour.Name = "numericUpDownHour";
             this.numericUpDownHour.ReadOnly = true;
             this.numericUpDownHour.Size = new System.Drawing.Size(75, 22);
@@ -1059,23 +1208,19 @@ namespace TestServerApp
             // 
             // textBoxQtyOfQues
             // 
-            this.textBoxQtyOfQues.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBoxQtyOfQues.Location = new System.Drawing.Point(122, 77);
+            this.textBoxQtyOfQues.Location = new System.Drawing.Point(132, 77);
             this.textBoxQtyOfQues.Name = "textBoxQtyOfQues";
             this.textBoxQtyOfQues.ReadOnly = true;
-            this.textBoxQtyOfQues.Size = new System.Drawing.Size(345, 22);
+            this.textBoxQtyOfQues.Size = new System.Drawing.Size(341, 22);
             this.textBoxQtyOfQues.TabIndex = 17;
             this.textBoxQtyOfQues.TextChanged += new System.EventHandler(this.textBoxAuthor_TextChanged);
             // 
             // textBoxNameT
             // 
-            this.textBoxNameT.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBoxNameT.Location = new System.Drawing.Point(122, 49);
+            this.textBoxNameT.Location = new System.Drawing.Point(132, 49);
             this.textBoxNameT.Name = "textBoxNameT";
             this.textBoxNameT.ReadOnly = true;
-            this.textBoxNameT.Size = new System.Drawing.Size(345, 22);
+            this.textBoxNameT.Size = new System.Drawing.Size(341, 22);
             this.textBoxNameT.TabIndex = 16;
             this.textBoxNameT.TextChanged += new System.EventHandler(this.textBoxAuthor_TextChanged);
             // 
@@ -1085,7 +1230,7 @@ namespace TestServerApp
             this.buttonCanselLoadTest.AutoSize = true;
             this.buttonCanselLoadTest.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
             this.buttonCanselLoadTest.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.buttonCanselLoadTest.Location = new System.Drawing.Point(368, 144);
+            this.buttonCanselLoadTest.Location = new System.Drawing.Point(374, 144);
             this.buttonCanselLoadTest.Name = "buttonCanselLoadTest";
             this.buttonCanselLoadTest.Size = new System.Drawing.Size(99, 26);
             this.buttonCanselLoadTest.TabIndex = 3;
@@ -1095,12 +1240,10 @@ namespace TestServerApp
             // 
             // textBoxAuthor
             // 
-            this.textBoxAuthor.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBoxAuthor.Location = new System.Drawing.Point(122, 21);
+            this.textBoxAuthor.Location = new System.Drawing.Point(132, 21);
             this.textBoxAuthor.Name = "textBoxAuthor";
             this.textBoxAuthor.ReadOnly = true;
-            this.textBoxAuthor.Size = new System.Drawing.Size(345, 22);
+            this.textBoxAuthor.Size = new System.Drawing.Size(341, 22);
             this.textBoxAuthor.TabIndex = 15;
             this.textBoxAuthor.TextChanged += new System.EventHandler(this.textBoxAuthor_TextChanged);
             // 
@@ -1110,7 +1253,7 @@ namespace TestServerApp
             this.buttonOkLoadTest.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
             this.buttonOkLoadTest.Enabled = false;
             this.buttonOkLoadTest.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.buttonOkLoadTest.Location = new System.Drawing.Point(122, 145);
+            this.buttonOkLoadTest.Location = new System.Drawing.Point(132, 144);
             this.buttonOkLoadTest.Name = "buttonOkLoadTest";
             this.buttonOkLoadTest.Size = new System.Drawing.Size(99, 26);
             this.buttonOkLoadTest.TabIndex = 2;
@@ -1192,8 +1335,6 @@ namespace TestServerApp
             // 
             // textBoxConfPass
             // 
-            this.textBoxConfPass.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.textBoxConfPass.Location = new System.Drawing.Point(142, 133);
             this.textBoxConfPass.Name = "textBoxConfPass";
             this.textBoxConfPass.Size = new System.Drawing.Size(341, 21);
@@ -1202,8 +1343,6 @@ namespace TestServerApp
             // 
             // textBoxPassword
             // 
-            this.textBoxPassword.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.textBoxPassword.Location = new System.Drawing.Point(142, 105);
             this.textBoxPassword.Name = "textBoxPassword";
             this.textBoxPassword.Size = new System.Drawing.Size(341, 21);
@@ -1212,8 +1351,6 @@ namespace TestServerApp
             // 
             // textBoxLogin
             // 
-            this.textBoxLogin.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.textBoxLogin.Location = new System.Drawing.Point(142, 77);
             this.textBoxLogin.Name = "textBoxLogin";
             this.textBoxLogin.Size = new System.Drawing.Size(341, 21);
@@ -1222,8 +1359,6 @@ namespace TestServerApp
             // 
             // textBoxLN
             // 
-            this.textBoxLN.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.textBoxLN.Location = new System.Drawing.Point(142, 49);
             this.textBoxLN.Name = "textBoxLN";
             this.textBoxLN.Size = new System.Drawing.Size(341, 21);
@@ -1268,7 +1403,6 @@ namespace TestServerApp
             // 
             // buttonCanselUpdateUser
             // 
-            this.buttonCanselUpdateUser.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.buttonCanselUpdateUser.AutoSize = true;
             this.buttonCanselUpdateUser.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
             this.buttonCanselUpdateUser.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
@@ -1296,8 +1430,6 @@ namespace TestServerApp
             // 
             // textBoxFN
             // 
-            this.textBoxFN.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.textBoxFN.Location = new System.Drawing.Point(142, 21);
             this.textBoxFN.Name = "textBoxFN";
             this.textBoxFN.Size = new System.Drawing.Size(341, 21);
@@ -1327,15 +1459,13 @@ namespace TestServerApp
             // 
             // comboBoxShowUserOfGroup
             // 
-            this.comboBoxShowUserOfGroup.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.comboBoxShowUserOfGroup.BackColor = System.Drawing.SystemColors.Info;
             this.comboBoxShowUserOfGroup.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBoxShowUserOfGroup.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.comboBoxShowUserOfGroup.FormattingEnabled = true;
-            this.comboBoxShowUserOfGroup.Location = new System.Drawing.Point(115, 20);
+            this.comboBoxShowUserOfGroup.Location = new System.Drawing.Point(142, 20);
             this.comboBoxShowUserOfGroup.Name = "comboBoxShowUserOfGroup";
-            this.comboBoxShowUserOfGroup.Size = new System.Drawing.Size(368, 23);
+            this.comboBoxShowUserOfGroup.Size = new System.Drawing.Size(341, 23);
             this.comboBoxShowUserOfGroup.TabIndex = 4;
             this.comboBoxShowUserOfGroup.SelectedIndexChanged += new System.EventHandler(this.comboBoxShowUserOfGroup_SelectedIndexChanged);
             // 
@@ -1387,15 +1517,13 @@ namespace TestServerApp
             // 
             // comboBoxAddNewUser
             // 
-            this.comboBoxAddNewUser.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.comboBoxAddNewUser.BackColor = System.Drawing.SystemColors.Info;
             this.comboBoxAddNewUser.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBoxAddNewUser.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.comboBoxAddNewUser.FormattingEnabled = true;
-            this.comboBoxAddNewUser.Location = new System.Drawing.Point(115, 10);
+            this.comboBoxAddNewUser.Location = new System.Drawing.Point(142, 10);
             this.comboBoxAddNewUser.Name = "comboBoxAddNewUser";
-            this.comboBoxAddNewUser.Size = new System.Drawing.Size(368, 23);
+            this.comboBoxAddNewUser.Size = new System.Drawing.Size(341, 23);
             this.comboBoxAddNewUser.TabIndex = 0;
             // 
             // panelAddGroup
@@ -1413,7 +1541,6 @@ namespace TestServerApp
             // 
             // buttonCanselAddGroup
             // 
-            this.buttonCanselAddGroup.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.buttonCanselAddGroup.AutoSize = true;
             this.buttonCanselAddGroup.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
             this.buttonCanselAddGroup.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
@@ -1429,8 +1556,9 @@ namespace TestServerApp
             // 
             this.buttonAddGroup.AutoSize = true;
             this.buttonAddGroup.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
+            this.buttonAddGroup.Enabled = false;
             this.buttonAddGroup.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.buttonAddGroup.Location = new System.Drawing.Point(83, 57);
+            this.buttonAddGroup.Location = new System.Drawing.Point(142, 57);
             this.buttonAddGroup.Name = "buttonAddGroup";
             this.buttonAddGroup.Size = new System.Drawing.Size(99, 25);
             this.buttonAddGroup.TabIndex = 2;
@@ -1440,11 +1568,9 @@ namespace TestServerApp
             // 
             // textBoxbuttonlAddGroup
             // 
-            this.textBoxbuttonlAddGroup.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBoxbuttonlAddGroup.Location = new System.Drawing.Point(83, 21);
+            this.textBoxbuttonlAddGroup.Location = new System.Drawing.Point(142, 21);
             this.textBoxbuttonlAddGroup.Name = "textBoxbuttonlAddGroup";
-            this.textBoxbuttonlAddGroup.Size = new System.Drawing.Size(400, 21);
+            this.textBoxbuttonlAddGroup.Size = new System.Drawing.Size(341, 21);
             this.textBoxbuttonlAddGroup.TabIndex = 1;
             this.textBoxbuttonlAddGroup.TextChanged += new System.EventHandler(this.textBoxName_TextChanged);
             // 
@@ -1484,40 +1610,6 @@ namespace TestServerApp
             // 
             this.openFileDialog1.FileName = "openFileDialog1";
             // 
-            // panelFilterTest
-            // 
-            this.panelFilterTest.Controls.Add(this.label22);
-            this.panelFilterTest.Controls.Add(this.comboBoxTestTitle);
-            this.panelFilterTest.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panelFilterTest.Location = new System.Drawing.Point(0, 1487);
-            this.panelFilterTest.Name = "panelFilterTest";
-            this.panelFilterTest.Size = new System.Drawing.Size(493, 40);
-            this.panelFilterTest.TabIndex = 18;
-            this.panelFilterTest.Visible = false;
-            // 
-            // comboBoxTestTitle
-            // 
-            this.comboBoxTestTitle.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.comboBoxTestTitle.BackColor = System.Drawing.SystemColors.Info;
-            this.comboBoxTestTitle.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comboBoxTestTitle.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.comboBoxTestTitle.FormattingEnabled = true;
-            this.comboBoxTestTitle.Location = new System.Drawing.Point(115, 10);
-            this.comboBoxTestTitle.Name = "comboBoxTestTitle";
-            this.comboBoxTestTitle.Size = new System.Drawing.Size(368, 23);
-            this.comboBoxTestTitle.TabIndex = 0;
-            this.comboBoxTestTitle.SelectedIndexChanged += new System.EventHandler(this.comboBoxTestTitle_SelectedIndexChanged);
-            // 
-            // label22
-            // 
-            this.label22.AutoSize = true;
-            this.label22.Location = new System.Drawing.Point(10, 14);
-            this.label22.Name = "label22";
-            this.label22.Size = new System.Drawing.Size(52, 15);
-            this.label22.TabIndex = 1;
-            this.label22.Text = "Test title";
-            // 
             // FormMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -1555,6 +1647,11 @@ namespace TestServerApp
             ((System.ComponentModel.ISupportInitialize)(this.splitContainerDG)).EndInit();
             this.splitContainerDG.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
+            this.panelServerSettings.ResumeLayout(false);
+            this.panelServerSettings.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownNIC)).EndInit();
+            this.panelFilterTest.ResumeLayout(false);
+            this.panelFilterTest.PerformLayout();
             this.panelAddUser.ResumeLayout(false);
             this.panelAddUser.PerformLayout();
             this.panelTestFoGroup.ResumeLayout(false);
@@ -1585,8 +1682,6 @@ namespace TestServerApp
             this.panelAddGroup.PerformLayout();
             this.panelShowAllGroup.ResumeLayout(false);
             this.panelShowAllGroup.PerformLayout();
-            this.panelFilterTest.ResumeLayout(false);
-            this.panelFilterTest.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
         }
@@ -1610,12 +1705,12 @@ namespace TestServerApp
         //private RepositoryLibrary.IGenericRepository<DALServerDB.Infrastructure.UserAnswear> repUsAnsw;
 
         public DALServerDB.Infrastructure.User User { get; }
-        public string Connection { get; }
+        public string ConnectionStr { get; }
 
         private List<string> groupsStr = new List<string>() { "Show", "Add", "Update", "Add user", "Show users" };
         private List<string> usersStr = new List<string>() { "Show", "Add", "Update" };
         private List<string> testsStr = new List<string>() { "Load test", "Show all", "Assignes test", "Show test of groups" };
-        private List<string> serverStr = new List<string>();
+        private List<string> serverStr = new List<string>() { "Settings" };
         private List<string> resultStr = new List<string>() { "Show Result" };
 
         string symbSeparator = "/";
@@ -1626,6 +1721,9 @@ namespace TestServerApp
 
         private XmlClassLibrary.Test Test;
 
+        private TcpListener Server;
+        private DALServerDB.Infrastructure.Test ClientTest;
+
         public FormMain()
         {
             InitializeComponent();
@@ -1634,10 +1732,12 @@ namespace TestServerApp
         {
             InitializeComponent();
             InitializeNewComponent();
+            this.Text = "Server";
             Test = new XmlClassLibrary.Test();
             User = user;
-            Connection = connection;
+            this.ConnectionStr = connection;
             int lineHeight = 15;
+            int plusCount = 1;
 
             ConnectionDB();
 
@@ -1647,11 +1747,11 @@ namespace TestServerApp
             listBoxServer.Items.AddRange(serverStr.ToArray());
             listBoxResult.Items.AddRange(resultStr.ToArray());
 
-            listBoxGroups.Size = NewListBoxSize(listBoxGroups.Width, listBoxGroups.Items.Count + 1, lineHeight);
-            listBoxUsers.Size = NewListBoxSize(listBoxUsers.Width, listBoxUsers.Items.Count + 1, lineHeight);
-            listBoxTests.Size = NewListBoxSize(listBoxTests.Width, listBoxTests.Items.Count + 1, lineHeight);
-            listBoxServer.Size = NewListBoxSize(listBoxServer.Width, listBoxServer.Items.Count + 1, lineHeight);
-            listBoxResult.Size = NewListBoxSize(listBoxResult.Width, listBoxResult.Items.Count + 2, lineHeight);
+            listBoxGroups.Size = NewListBoxSize(listBoxGroups.Width, listBoxGroups.Items.Count + plusCount, lineHeight);
+            listBoxUsers.Size = NewListBoxSize(listBoxUsers.Width, listBoxUsers.Items.Count + plusCount, lineHeight);
+            listBoxTests.Size = NewListBoxSize(listBoxTests.Width, listBoxTests.Items.Count + plusCount, lineHeight);
+            listBoxServer.Size = NewListBoxSize(listBoxServer.Width, listBoxServer.Items.Count + plusCount, lineHeight);
+            listBoxResult.Size = NewListBoxSize(listBoxResult.Width, listBoxResult.Items.Count + plusCount, lineHeight);
 
             labelSelected.Text = string.Empty;
             labelIsAdmin.Text = User.IsAdmin ? "Admin" : "User";
@@ -1663,7 +1763,7 @@ namespace TestServerApp
 
         private void ConnectionDB()
         {
-            work = new RepositoryLibrary.GenericUnitOfWork(new DALServerDB.ServerContext(Connection));
+            work = new RepositoryLibrary.GenericUnitOfWork(new DALServerDB.ServerContext(ConnectionStr));
 
             repUs = work.Repository<DALServerDB.Infrastructure.User>();
             repGr = work.Repository<DALServerDB.Infrastructure.Group>();
@@ -1765,6 +1865,10 @@ namespace TestServerApp
             if (panelShowTests.Visible) panelShowTests.Visible = false;
             if (panelAsignTest.Visible) panelAsignTest.Visible = false;
             if (panelTestFoGroup.Visible) panelTestFoGroup.Visible = false;
+            if (panelFilterTest.Visible) panelFilterTest.Visible = false;
+
+            if (panelServerSettings.Visible) panelServerSettings.Visible = false;
+
             if (panelFilterTest.Visible) panelFilterTest.Visible = false;
         }
         private void SplitContainerDGSplitterDistance(int height)
@@ -2005,8 +2109,6 @@ namespace TestServerApp
 
                 tmp.Groups.Add(group);
                 repUs.Update(tmp);
-
-                ShowAllUsers();
             }
         }
         private void comboBoxShowUserOfGroup_SelectedIndexChanged(object sender, EventArgs e)
@@ -2173,7 +2275,7 @@ namespace TestServerApp
             tmpId = Convert.ToInt32(dataGridView1.CurrentRow.Cells[0].Value);
             var tmp = repUs.FindById(tmpId);
 
-            if (tmp.LastName != textBoxLN.Text && IsLoginContains(textBoxLogin.Text))
+            if (tmp.Login != textBoxLogin.Text && IsLoginContains(textBoxLogin.Text))
             {
                 MessageBox.Show("Login exist", this.Text, MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
@@ -2182,13 +2284,14 @@ namespace TestServerApp
             if (tmp.FirstName == textBoxFN.Text &&
                 tmp.LastName == textBoxLN.Text &&
                 tmp.Login == textBoxLogin.Text &&
-                tmp.Password == textBoxPassword.Text) return;
+                tmp.Password == textBoxPassword.Text &&
+                tmp.IsAdmin == checkBoxIsAdmin.Checked) return;
 
             tmp.FirstName = textBoxFN.Text;
             tmp.LastName = textBoxLN.Text;
             tmp.Login = textBoxLogin.Text;
             tmp.Password = DALServerDB.Models.Crypter.SetCrypt(textBoxPassword.Text);
-
+            tmp.IsAdmin = checkBoxIsAdmin.Checked;
             repUs.Update(tmp);
             CleanTextBox();
             ShowAllUsersWithPassword();
@@ -2348,7 +2451,7 @@ namespace TestServerApp
                     var tmp = repT.FindById(tmpId);
                     repT.Remove(tmp);
 
-                    ShowAllUsersWithPassword();
+                    ShowAllTests();
                 }
                 catch (Exception ex)
                 {
@@ -2437,7 +2540,187 @@ namespace TestServerApp
         #region Server
         private void listBoxServer_SelectedIndexChanged(object sender, EventArgs e)
         {
+            AddTextToLabelSelectedText(listBoxServer);
+            PanelNotVisible();
+            SplitContainerDGPanel1Collapsed();
+            switch (listBoxServer.SelectedItem.ToString())
+            {
+                case "Settings":
+                    //SplitContainerDGSplitterDistance(0);
+                    panelServerSettings.Visible = true;
+                    ButtonStartServerEnabled();
+                    break;
+            }
+        }
 
+        private void buttonStart_Click(object sender, EventArgs e)
+        {
+            textBoxHostName.Enabled = false;
+            textBoxPortNumber.Enabled = false;
+            buttonStart.Enabled = false;
+
+            try
+            {
+                IPAddress localAddr = IPAddress.Parse(textBoxHostName.Text);
+                int port = int.Parse(textBoxPortNumber.Text);
+
+                Server = new TcpListener(localAddr, port);
+                Server.Start();
+
+                while (true)
+                {
+                    var client = Server.AcceptTcpClient();
+
+                    // создаем новый поток для обслуживания нового клиента
+                    Thread clientThread = new Thread(Process);
+                    clientThread.Start(client);
+                }
+            }
+            catch (Exception ex) { MessageBox.Show(ex.Message, this.Text, MessageBoxButtons.OK, MessageBoxIcon.Warning); }
+            finally
+            {
+                if (Server != null) Server.Stop();
+            }
+        }
+        private void Process(object sender)
+        {
+            TcpClient client = sender as TcpClient;
+            NetworkStream stream = null;
+            try
+            {
+                stream = client.GetStream();
+
+                while (true)
+                {
+                    DALServerDB.Data obj = null;
+                    byte[] data = null; // буфер для получаемых данных
+                    // получаем сообщение
+                    //if (stream.DataAvailable)
+                    {
+                        obj = (DALServerDB.Data)new BinaryFormatter().Deserialize(stream);
+                        if (obj?.Token == null) obj = CheckUser(obj);
+                        //if (obj?.Token == null) break;
+                        else if (!obj.IsWorking) break;
+                        else
+                        {
+                            if (obj.IsStart)
+                            {
+                                ClientTest = repT.FindById(obj.TestId);
+                                obj.QuestionQty = ClientTest.Questions.Count;
+                                obj.IsStart = false;
+                                obj.QuestionId = ClientTest.Questions.Min(x => x.Id);
+                            }
+                            else if (!obj.IsStart)
+                            {
+                                var a = ClientTest.Questions.FirstOrDefault(x => x.Id == (int)obj.QuestionId).Answears.FirstOrDefault(x => x.IsRight);
+                                if (a.Id == obj.AnswearId)
+                                {
+                                    var r = repR.FindAll(x => x.User.Id == obj.UserId && x.Test.Id == obj.TestId).FirstOrDefault();
+                                    r.QtyOfRightAnswers++;
+                                    repR.Update(r);
+                                }
+                            }
+
+                            if (obj.IsPassing && !obj.IsLast)
+                            {
+
+                                obj.QuestionId = ClientTest.Questions.Select(x => x.Id).OrderBy(x => x).FirstOrDefault(x => x > obj.QuestionId);
+                                int questionId = (int)obj.QuestionId;
+                                obj.Question = GetQuestion(ClientTest, questionId);
+                                obj.Answears = GetAnswears(ClientTest, questionId);
+                            }
+
+                            if (obj.IsLast)
+                            {
+                                var r = repR.FindAll(x => x.User.Id == obj.UserId && x.Test.Id == obj.TestId).FirstOrDefault();
+                                r.Mark = GetMarkForTest(r.QtyOfRightAnswers, obj.QuestionQty);
+                                obj.ResultMark = r.Mark;
+                                obj.QtyOfRightAnswers = r.QtyOfRightAnswers;
+                                repR.Update(r);
+                                ClientTest = null;
+                            }
+                        }
+                    }
+                    //do smth
+
+                    // отправляем обратно сообщение в верхнем регистре
+                    BinaryFormatter bf = new BinaryFormatter();
+                    using (var ms = new MemoryStream())
+                    {
+                        bf.Serialize(ms, obj);
+                        data = ms.ToArray();
+                        stream.Write(data, 0, data.Length);
+                    }
+
+                }
+            }
+            catch (Exception ex) { MessageBox.Show(ex.Message, this.Text, MessageBoxButtons.OK, MessageBoxIcon.Warning); }
+            finally
+            {
+                if (stream != null) stream.Close();
+                if (client != null) client.Close();
+            }
+        }
+        private int GetMarkForTest(int qtyOfRightAnswers, int questionQty)
+        {
+            int a = qtyOfRightAnswers * 100 / questionQty;
+            int mark = 0;
+            if (a < 20) mark = 2;
+            else if (a >= 20 && a < 40) mark = 4;
+            else if (a >= 40 && a < 60) mark = 6;
+            else if (a >= 60 && a < 80) mark = 8;
+            else if (a >= 80 && a <= 100) mark = 10;
+            return mark;
+        }
+        private List<string> GetAnswears(DALServerDB.Infrastructure.Test test, int questionId)
+        {
+            return test.Questions.FirstOrDefault(x => x.Id == questionId).Answears.Select(x => x.Description).ToList();
+        }
+        private string GetQuestion(DALServerDB.Infrastructure.Test test, int questionId)
+        {
+            return test.Questions.FirstOrDefault(x => x.Id == questionId).Title;
+        }
+        private DALServerDB.Data CheckUser(DALServerDB.Data data)
+        {
+            if (data == null) return null;
+            var user1 = repUs.FindAll(p => p.Login == data.Login);
+            if (user1 == null) return null;
+            var User = user1.FirstOrDefault(x => DALServerDB.Models.Crypter.GetCrypt(x.Password) == data.Password);
+            if (User != null)
+            {
+                data.Token = User.FirstName + User.LastName;
+                data.FName = User.FirstName;
+                data.LName = User.LastName;
+                data.UserId = User.Id;
+                data.Password = string.Empty;
+                data.Login = string.Empty;
+                data.Tests = repT.FindAll(x => x.Groups.Any(z => User.Groups.Any(q => q.NameGroup == z.NameGroup)));
+                data.IsWorking = true;
+                data.IsPassing = false;
+                data.IsStart = false;
+                data.IsLast = false;
+
+                return data;
+            }
+            return null;
+        }
+
+        private void buttonStop_Click(object sender, EventArgs e)
+        {
+            textBoxHostName.Enabled = true;
+            textBoxPortNumber.Enabled = true;
+            buttonStart.Enabled = true;
+        }
+        private void textBoxHostName_TextChanged(object sender, EventArgs e)
+        {
+            ButtonStartServerEnabled();
+        }
+        private void ButtonStartServerEnabled()
+        {
+            if (string.IsNullOrWhiteSpace(textBoxHostName.Text) ||
+                string.IsNullOrWhiteSpace(textBoxPortNumber.Text))
+                buttonStart.Enabled = false;
+            else buttonStart.Enabled = true;
         }
 
         #endregion Server
@@ -2475,7 +2758,7 @@ namespace TestServerApp
                 LastName = x.User.LastName,
                 Test = x.Test.Title,
                 QtyOfRightAnswers = x.QtyOfRightAnswers,
-                Mark = x.Mark,
+                Mark = x.Mark
             }).ToList();
         }
         private void comboBoxTestTitle_SelectedIndexChanged(object sender, EventArgs e)
@@ -2504,6 +2787,5 @@ namespace TestServerApp
         }
 
         #endregion Result
-
     }
 }

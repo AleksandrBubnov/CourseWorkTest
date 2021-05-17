@@ -1,8 +1,14 @@
 ﻿using DALServerDB.Infrastructure;
 using DALServerDB.Models;
 using System;
+using System.Collections.Generic;
 using System.Data.Entity;
 using System.Data.Entity.ModelConfiguration;
+using System.IO;
+using System.Net.Sockets;
+using System.Runtime.Serialization.Formatters.Binary;
+using System.Text;
+using System.Windows.Forms;
 
 namespace DALServerDB
 {
@@ -255,6 +261,127 @@ namespace DALServerDB
             context.UserAnswears.Add(userAnswear3);
 
             context.SaveChanges();
+        }
+    }
+
+    [Serializable]
+    public class Data
+    {
+        public string Token { get; set; }
+        public bool IsWorking { get; set; }
+        public bool IsPassing { get; set; }
+        public bool IsStart { get; set; }
+        public bool IsLast { get; set; }
+
+        public string FName { get; set; }
+        public string LName { get; set; }
+        public int UserId { get; set; }
+
+        public string Login { get; set; }
+        public string Password { get; set; }
+
+        public IEnumerable<DALServerDB.Infrastructure.Test> Tests { get; set; }
+        public int TestId { get; set; }
+
+        public int? QuestionId { get; set; }
+        public int QuestionQty { get; set; }
+        public string Question { get; set; }
+        public List<string> Answears { get; set; }
+        public int? AnswearId { get; set; }
+
+        public int ResultMark { get; set; }
+        public int QtyOfRightAnswers { get; set; }
+    }
+    public class ClientObject
+    {
+        public string Text { get; set; }
+        public TcpClient client;
+        public ClientObject(TcpClient tcpClient)
+        {
+            client = tcpClient;
+        }
+        public ClientObject(TcpClient tcpClient, string Text)
+        {
+            client = tcpClient;
+            this.Text = Text;
+        }
+
+        public void Process2()
+        {
+            NetworkStream stream = null;
+            try
+            {
+                stream = client.GetStream();
+                byte[] data = new byte[64]; // буфер для получаемых данных
+                while (true)
+                {
+                    // получаем сообщение
+                    StringBuilder builder = new StringBuilder();
+                    int bytes = 0;
+                    do
+                    {
+                        bytes = stream.Read(data, 0, data.Length);
+                        builder.Append(Encoding.Unicode.GetString(data, 0, bytes));
+                    }
+                    while (stream.DataAvailable);
+
+                    string message = builder.ToString();
+
+                    Console.WriteLine(message);
+                    // отправляем обратно сообщение в верхнем регистре
+                    message = message.Substring(message.IndexOf(':') + 1).Trim().ToUpper();
+                    data = Encoding.Unicode.GetBytes(message);
+                    stream.Write(data, 0, data.Length);
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            finally
+            {
+                if (stream != null)
+                    stream.Close();
+                if (client != null)
+                    client.Close();
+            }
+        }
+        public void Process()
+        {
+            NetworkStream stream = null;
+            try
+            {
+                stream = client.GetStream();
+
+                while (true)
+                {
+                    Data obj = null;
+                    byte[] data = null; // буфер для получаемых данных
+                    // получаем сообщение
+                    if (stream.DataAvailable)
+                    {
+                        obj = (Data)new BinaryFormatter().Deserialize(stream);
+
+                    }
+                    //do smth
+
+                    // отправляем обратно сообщение в верхнем регистре
+                    BinaryFormatter bf = new BinaryFormatter();
+                    using (var ms = new MemoryStream())
+                    {
+                        bf.Serialize(ms, obj);
+                        data = ms.ToArray();
+                        stream.Write(data, 0, data.Length);
+                    }
+
+                }
+            }
+            catch (Exception ex) { MessageBox.Show(ex.Message, this.Text, MessageBoxButtons.OK, MessageBoxIcon.Warning); }
+            finally
+            {
+                if (stream != null) stream.Close();
+                if (client != null) client.Close();
+            }
         }
     }
 }
