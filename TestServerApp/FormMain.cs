@@ -8,9 +8,9 @@ using System.Windows.Forms;
 using System.Net;
 using System.Net.Sockets;
 using System.Runtime.Serialization.Formatters.Binary;
-using System.Text;
 using System.Threading;
 using System.Xml.Serialization;
+using System.Threading.Tasks;
 
 namespace TestServerApp
 {
@@ -1721,8 +1721,10 @@ namespace TestServerApp
 
         private XmlClassLibrary.Test Test;
 
-        private TcpListener Server;
+        private static TcpListener Listener;
         private DALServerDB.Infrastructure.Test ClientTest;
+        private DALServerDB.Infrastructure.Result ClientResult;
+        private CancellationTokenSource tokenSource = null;
 
         public FormMain()
         {
@@ -1784,7 +1786,8 @@ namespace TestServerApp
         }
         private void FormMain_FormClosing(object sender, FormClosingEventArgs e)
         {
-            if (e.CloseReason != CloseReason.FormOwnerClosing) this.Owner.Close();
+            if (Listener != null) Listener.Stop();
+            if (e.CloseReason != CloseReason.FormOwnerClosing) this.Invoke(new Action(() => this.Owner.Close()));
         }
 
         #region Menu
@@ -2546,9 +2549,9 @@ namespace TestServerApp
             switch (listBoxServer.SelectedItem.ToString())
             {
                 case "Settings":
-                    //SplitContainerDGSplitterDistance(0);
                     panelServerSettings.Visible = true;
                     ButtonStartServerEnabled();
+                    if (Listener != null) buttonStart.Enabled = false;
                     break;
             }
         }
@@ -2558,73 +2561,114 @@ namespace TestServerApp
             textBoxHostName.Enabled = false;
             textBoxPortNumber.Enabled = false;
             buttonStart.Enabled = false;
-
-            try
+            if (Listener == null)
             {
-                IPAddress localAddr = IPAddress.Parse(textBoxHostName.Text);
-                int port = int.Parse(textBoxPortNumber.Text);
-
-                Server = new TcpListener(localAddr, port);
-                Server.Start();
-
-                while (true)
+                try
                 {
-                    var client = Server.AcceptTcpClient();
+                    IPAddress localAddr = IPAddress.Parse(textBoxHostName.Text);
+                    int port = int.Parse(textBoxPortNumber.Text);
 
-                    // создаем новый поток для обслуживания нового клиента
-                    Thread clientThread = new Thread(Process);
-                    clientThread.Start(client);
+                    Listener = new TcpListener(localAddr, port);
+                    tokenSource = new CancellationTokenSource();
+                    Task.Factory.StartNew(() => ListenThread(Listener, tokenSource.Token), tokenSource.Token);
                 }
-            }
-            catch (Exception ex) { MessageBox.Show(ex.Message, this.Text, MessageBoxButtons.OK, MessageBoxIcon.Warning); }
-            finally
-            {
-                if (Server != null) Server.Stop();
+                catch (Exception ex) { MessageBox.Show(ex.Message, this.Text, MessageBoxButtons.OK, MessageBoxIcon.Warning); }
             }
         }
-        private void Process(object sender)
+        private void ListenThread(TcpListener listener, CancellationToken token)
+        {
+            Listener.Start(2);
+
+            while (true)
+            {
+                try
+                {
+                    if (tokenSource.Token.IsCancellationRequested) tokenSource.Token.ThrowIfCancellationRequested();
+
+                    TcpClient client = Listener.AcceptTcpClient();
+
+                    //// создаем новый поток для обслуживания нового клиента
+                    //Thread clientThread = new Thread(Process);
+                    //clientThread.Start(client);
+
+                    Task.Factory.StartNew(() => Process(client, tokenSource.Token), tokenSource.Token);
+                }
+                catch /*(Exception ex)*/ { break; /*MessageBox.Show(ex.Message, this.Text, MessageBoxButtons.OK, MessageBoxIcon.Warning); break;*/ }
+            }
+        }
+        private void Process(object sender, CancellationToken token)
         {
             TcpClient client = sender as TcpClient;
             NetworkStream stream = null;
             try
             {
-                stream = client.GetStream();
-
-                while (true)
+                using (stream = client.GetStream())
                 {
                     DALServerDB.Data obj = null;
-                    byte[] data = null; // буфер для получаемых данных
-                    // получаем сообщение
-                    //if (stream.DataAvailable)
+
+                    while (true)
                     {
+                        if (tokenSource == null) return;
+                        if (tokenSource.Token.IsCancellationRequested) tokenSource.Token.ThrowIfCancellationRequested();
                         obj = (DALServerDB.Data)new BinaryFormatter().Deserialize(stream);
                         if (obj?.Token == null) obj = CheckUser(obj);
-                        //if (obj?.Token == null) break;
-                        else if (!obj.IsWorking) break;
+                        else if (!obj.IsWorking) return;
+                        else if (obj.IsGroup)
+                        {
+                            obj.Tests = GetTest(obj.Group);
+                            obj.IsGroup = false;
+                        }
+                        else if (obj.IsTest)
+                        {
+                            ClientTest = repT.FindById(obj.TestId);
+                            obj.IsTest = false;
+                        }
                         else
                         {
                             if (obj.IsStart)
                             {
-                                ClientTest = repT.FindById(obj.TestId);
                                 obj.QuestionQty = ClientTest.Questions.Count;
-                                obj.IsStart = false;
+                                //obj.IsStart = false;
                                 obj.QuestionId = ClientTest.Questions.Min(x => x.Id);
+
+                                ClientResult = repR.FindAll(x => x.User.Id == obj.UserId && x.Test.Id == obj.TestId).LastOrDefault();
+                                if (ClientResult != null)
+                                {
+                                    ClientResult.Date = DateTime.Today;
+                                    ClientResult.Mark = 0;
+                                    ClientResult.QtyOfRightAnswers = 0;
+                                    repR.Update(ClientResult);
+                                }
+                                else
+                                {
+                                    ClientResult = new DALServerDB.Infrastructure.Result()
+                                    {
+                                        Date = DateTime.Now,
+                                        Mark = 0,
+                                        QtyOfRightAnswers = 0,
+                                        Test = repT.FindById(obj.TestId),
+                                        User = repUs.FindById(obj.UserId)
+                                    };
+                                    repR.Add(ClientResult);
+                                }
                             }
-                            else if (!obj.IsStart)
+                            else if (!obj.IsStart) // count mark
                             {
                                 var a = ClientTest.Questions.FirstOrDefault(x => x.Id == (int)obj.QuestionId).Answears.FirstOrDefault(x => x.IsRight);
-                                if (a.Id == obj.AnswearId)
+                                if (obj.AnswearId != null && a.Id == obj.AnswearId)
                                 {
-                                    var r = repR.FindAll(x => x.User.Id == obj.UserId && x.Test.Id == obj.TestId).FirstOrDefault();
-                                    r.QtyOfRightAnswers++;
-                                    repR.Update(r);
+                                    ClientResult.QtyOfRightAnswers++;
+                                    repR.Update(ClientResult);
                                 }
                             }
 
-                            if (obj.IsPassing && !obj.IsLast)
+                            if (obj.IsPassing && !obj.IsLast && !obj.IsStart) // next Question
                             {
-
                                 obj.QuestionId = ClientTest.Questions.Select(x => x.Id).OrderBy(x => x).FirstOrDefault(x => x > obj.QuestionId);
+                            }
+
+                            if (obj.IsPassing && !obj.IsLast) // GetQuestion and GetAnswears
+                            {
                                 int questionId = (int)obj.QuestionId;
                                 obj.Question = GetQuestion(ClientTest, questionId);
                                 obj.Answears = GetAnswears(ClientTest, questionId);
@@ -2632,34 +2676,55 @@ namespace TestServerApp
 
                             if (obj.IsLast)
                             {
-                                var r = repR.FindAll(x => x.User.Id == obj.UserId && x.Test.Id == obj.TestId).FirstOrDefault();
-                                r.Mark = GetMarkForTest(r.QtyOfRightAnswers, obj.QuestionQty);
-                                obj.ResultMark = r.Mark;
-                                obj.QtyOfRightAnswers = r.QtyOfRightAnswers;
-                                repR.Update(r);
+                                if (ClientResult != null)
+                                {
+                                    ClientResult.Mark = GetMarkForTest(ClientResult.QtyOfRightAnswers, obj.QuestionQty);
+                                    ClientResult.Date = DateTime.Now;
+                                    ClientResult.Test = repT.FindById(obj.TestId);
+                                    ClientResult.User = repUs.FindById(obj.UserId);
+                                    repR.Update(ClientResult);
+                                    obj.ResultMark = ClientResult.Mark;
+                                    obj.QtyOfRightAnswers = ClientResult.QtyOfRightAnswers;
+                                }
+                                ClientResult = null;
                                 ClientTest = null;
+                                obj.IsLast = false;
+                                obj.IsPassing = false;
                             }
                         }
-                    }
-                    //do smth
 
-                    // отправляем обратно сообщение в верхнем регистре
-                    BinaryFormatter bf = new BinaryFormatter();
-                    using (var ms = new MemoryStream())
-                    {
-                        bf.Serialize(ms, obj);
-                        data = ms.ToArray();
-                        stream.Write(data, 0, data.Length);
-                    }
+                        //do smth
+                        if (obj == null)
+                        {
+                            obj = new DALServerDB.Data() { Token = null };
+                        }
 
+                        new BinaryFormatter().Serialize(client.GetStream(), obj);
+                    }
                 }
             }
-            catch (Exception ex) { MessageBox.Show(ex.Message, this.Text, MessageBoxButtons.OK, MessageBoxIcon.Warning); }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, this.Text, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
             finally
             {
                 if (stream != null) stream.Close();
                 if (client != null) client.Close();
             }
+        }
+        private List<DALServerDB.TestForData> GetTest(string group)
+        {
+            List<DALServerDB.TestForData> tmp = new List<DALServerDB.TestForData>();
+            repT.FindAll(x => x.Groups.Any(z => z.NameGroup == group)).ToList().
+                ForEach(x => tmp.Add(new DALServerDB.TestForData()
+                {
+                    Id = x.Id,
+                    Author = x.Author,
+                    Title = x.Title,
+                    Time = x.Time
+                }));
+            return tmp;
         }
         private int GetMarkForTest(int qtyOfRightAnswers, int questionQty)
         {
@@ -2672,9 +2737,16 @@ namespace TestServerApp
             else if (a >= 80 && a <= 100) mark = 10;
             return mark;
         }
-        private List<string> GetAnswears(DALServerDB.Infrastructure.Test test, int questionId)
+        private List<DALServerDB.AnswearForData> GetAnswears(DALServerDB.Infrastructure.Test test, int questionId)
         {
-            return test.Questions.FirstOrDefault(x => x.Id == questionId).Answears.Select(x => x.Description).ToList();
+            List<DALServerDB.AnswearForData> tmp = new List<DALServerDB.AnswearForData>();
+
+            test.Questions.FirstOrDefault(x => x.Id == questionId).Answears.ToList().ForEach(q => tmp.Add(new DALServerDB.AnswearForData()
+            {
+                Id = q.Id,
+                Description = q.Description
+            }));
+            return tmp;
         }
         private string GetQuestion(DALServerDB.Infrastructure.Test test, int questionId)
         {
@@ -2694,8 +2766,11 @@ namespace TestServerApp
                 data.UserId = User.Id;
                 data.Password = string.Empty;
                 data.Login = string.Empty;
-                data.Tests = repT.FindAll(x => x.Groups.Any(z => User.Groups.Any(q => q.NameGroup == z.NameGroup)));
+                data.Groups = new List<string>();
+                User.Groups.ToList().ForEach(x => data.Groups.Add(x.NameGroup));
                 data.IsWorking = true;
+                data.IsGroup = false;
+                data.IsTest = false;
                 data.IsPassing = false;
                 data.IsStart = false;
                 data.IsLast = false;
@@ -2707,6 +2782,10 @@ namespace TestServerApp
 
         private void buttonStop_Click(object sender, EventArgs e)
         {
+            tokenSource.Cancel();
+            if (Listener != null) Listener.Stop();
+            Listener = null;
+            tokenSource = null;
             textBoxHostName.Enabled = true;
             textBoxPortNumber.Enabled = true;
             buttonStart.Enabled = true;

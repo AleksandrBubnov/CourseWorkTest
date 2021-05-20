@@ -311,6 +311,10 @@ namespace TestServerApp
         }
         private void buttonSignIn_Click(object sender, EventArgs e)
         {
+            /// delete next 2 lines
+                work = new RepositoryLibrary.GenericUnitOfWork(new DALServerDB.ServerContext(textBoxConnectionString.Text));
+                repUs = work.Repository<DALServerDB.Infrastructure.User>();
+            ///
             Connection = textBoxConnectionString.Text;
             if (work == null)
             {
@@ -325,7 +329,6 @@ namespace TestServerApp
 
             try
             {
-                //user = repUs.FindAll(p => p.Login == textBoxLogin.Text && p.Password == textBoxLogin.Text).FirstOrDefault();
                 GetUserAdminAsync();
             }
             catch (Exception ex)
@@ -341,6 +344,7 @@ namespace TestServerApp
         }
         private void GetUserAdmin()
         {
+            menuStrip1.Invoke(new Action(() => menuStrip1.Enabled = false));
             buttonSignIn.Invoke(new Action(() => buttonSignIn.Enabled = false));
             textBoxLogin.Invoke(new Action(() => textBoxLogin.Enabled = false));
             textBoxPassword.Invoke(new Action(() => textBoxPassword.Enabled = false));
@@ -349,6 +353,7 @@ namespace TestServerApp
             if (User == null)
             {
                 MessageBox.Show(Environment.NewLine + "user not found!!!", this.Text, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                menuStrip1.Invoke(new Action(() => menuStrip1.Enabled = true));
                 buttonSignIn.Invoke(new Action(() => buttonSignIn.Enabled = true));
                 textBoxLogin.Invoke(new Action(() => textBoxLogin.Enabled = true));
                 textBoxPassword.Invoke(new Action(() => textBoxPassword.Enabled = true));

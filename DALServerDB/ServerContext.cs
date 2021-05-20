@@ -265,10 +265,25 @@ namespace DALServerDB
     }
 
     [Serializable]
+    public class TestForData
+    {
+        public int Id { get; set; }
+        public string Title { get; set; }
+        public string Author { get; set; }
+        public TimeSpan Time { get; set; }
+    }
+    [Serializable]
+    public class AnswearForData
+    {
+        public int Id { get; set; }
+        public string Description { get; set; }
+    }
+    [Serializable]
     public class Data
     {
         public string Token { get; set; }
         public bool IsWorking { get; set; }
+        public bool IsTest { get; set; }
         public bool IsPassing { get; set; }
         public bool IsStart { get; set; }
         public bool IsLast { get; set; }
@@ -276,21 +291,32 @@ namespace DALServerDB
         public string FName { get; set; }
         public string LName { get; set; }
         public int UserId { get; set; }
-
         public string Login { get; set; }
         public string Password { get; set; }
 
-        public IEnumerable<DALServerDB.Infrastructure.Test> Tests { get; set; }
+        public List<TestForData> Tests { get; set; }
         public int TestId { get; set; }
+        public List<string> Groups { get; set; }
+        public string Group { get; set; }
+        public bool IsGroup { get; set; }
 
         public int? QuestionId { get; set; }
         public int QuestionQty { get; set; }
         public string Question { get; set; }
-        public List<string> Answears { get; set; }
+        public List<AnswearForData> Answears { get; set; }
         public int? AnswearId { get; set; }
 
         public int ResultMark { get; set; }
         public int QtyOfRightAnswers { get; set; }
+    }
+    public enum Request
+    {
+        Working = 0,
+        Group = 1,
+        Test = 2,
+        QuestionStart = 3,
+        QuestionNext = 4,
+        QuestionLast = 5
     }
     public class ClientObject
     {

@@ -35,16 +35,18 @@ namespace TestClientApp
             this.connectionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.buttonExit = new System.Windows.Forms.Button();
             this.groupBoxClient = new System.Windows.Forms.GroupBox();
-            this.label1 = new System.Windows.Forms.Label();
-            this.textBoxLogin = new System.Windows.Forms.TextBox();
+            this.buttonSignIn = new System.Windows.Forms.Button();
             this.textBoxPassword = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
-            this.buttonSignIn = new System.Windows.Forms.Button();
+            this.textBoxLogin = new System.Windows.Forms.TextBox();
+            this.label1 = new System.Windows.Forms.Label();
             this.panelConnection = new System.Windows.Forms.Panel();
-            this.label3 = new System.Windows.Forms.Label();
+            this.textBoxPortNumber = new System.Windows.Forms.TextBox();
+            this.label26 = new System.Windows.Forms.Label();
+            this.textBoxHostName = new System.Windows.Forms.TextBox();
+            this.label27 = new System.Windows.Forms.Label();
             this.buttonCancel = new System.Windows.Forms.Button();
             this.buttonConnect = new System.Windows.Forms.Button();
-            this.textBoxConnectionString = new System.Windows.Forms.TextBox();
             this.menuStrip1.SuspendLayout();
             this.groupBoxClient.SuspendLayout();
             this.panelConnection.SuspendLayout();
@@ -74,7 +76,7 @@ namespace TestClientApp
             this.connectionToolStripMenuItem.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
             this.connectionToolStripMenuItem.ForeColor = System.Drawing.Color.White;
             this.connectionToolStripMenuItem.Name = "connectionToolStripMenuItem";
-            this.connectionToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.connectionToolStripMenuItem.Size = new System.Drawing.Size(136, 22);
             this.connectionToolStripMenuItem.Text = "Connection";
             this.connectionToolStripMenuItem.Click += new System.EventHandler(this.connectionToolStripMenuItem_Click);
             // 
@@ -103,6 +105,7 @@ namespace TestClientApp
             this.groupBoxClient.Controls.Add(this.label1);
             this.groupBoxClient.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.groupBoxClient.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.groupBoxClient.ForeColor = System.Drawing.SystemColors.Control;
             this.groupBoxClient.Location = new System.Drawing.Point(15, 28);
             this.groupBoxClient.Name = "groupBoxClient";
             this.groupBoxClient.Size = new System.Drawing.Size(385, 172);
@@ -110,27 +113,19 @@ namespace TestClientApp
             this.groupBoxClient.TabStop = false;
             this.groupBoxClient.Text = "Client";
             // 
-            // label1
+            // buttonSignIn
             // 
-            this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label1.Location = new System.Drawing.Point(31, 41);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(41, 16);
-            this.label1.TabIndex = 0;
-            this.label1.Text = "Login";
-            // 
-            // textBoxLogin
-            // 
-            this.textBoxLogin.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBoxLogin.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.textBoxLogin.Location = new System.Drawing.Point(154, 38);
-            this.textBoxLogin.Name = "textBoxLogin";
-            this.textBoxLogin.Size = new System.Drawing.Size(214, 22);
-            this.textBoxLogin.TabIndex = 2;
-            this.textBoxLogin.Text = "user3";
-            this.textBoxLogin.TextChanged += new System.EventHandler(this.textBoxLogin_TextChanged);
+            this.buttonSignIn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
+            this.buttonSignIn.Enabled = false;
+            this.buttonSignIn.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.buttonSignIn.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.buttonSignIn.Location = new System.Drawing.Point(154, 118);
+            this.buttonSignIn.Name = "buttonSignIn";
+            this.buttonSignIn.Size = new System.Drawing.Size(84, 31);
+            this.buttonSignIn.TabIndex = 4;
+            this.buttonSignIn.Text = "Sign in";
+            this.buttonSignIn.UseVisualStyleBackColor = false;
+            this.buttonSignIn.Click += new System.EventHandler(this.buttonSignIn_Click);
             // 
             // textBoxPassword
             // 
@@ -155,44 +150,79 @@ namespace TestClientApp
             this.label2.TabIndex = 1;
             this.label2.Text = "Password";
             // 
-            // buttonSignIn
+            // textBoxLogin
             // 
-            this.buttonSignIn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
-            this.buttonSignIn.Enabled = false;
-            this.buttonSignIn.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.buttonSignIn.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.buttonSignIn.Location = new System.Drawing.Point(154, 118);
-            this.buttonSignIn.Name = "buttonSignIn";
-            this.buttonSignIn.Size = new System.Drawing.Size(84, 31);
-            this.buttonSignIn.TabIndex = 4;
-            this.buttonSignIn.Text = "Sign in";
-            this.buttonSignIn.UseVisualStyleBackColor = false;
-            this.buttonSignIn.Click += new System.EventHandler(this.buttonSignIn_Click);
+            this.textBoxLogin.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.textBoxLogin.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.textBoxLogin.Location = new System.Drawing.Point(154, 38);
+            this.textBoxLogin.Name = "textBoxLogin";
+            this.textBoxLogin.Size = new System.Drawing.Size(214, 22);
+            this.textBoxLogin.TabIndex = 2;
+            this.textBoxLogin.Text = "user2";
+            this.textBoxLogin.TextChanged += new System.EventHandler(this.textBoxLogin_TextChanged);
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label1.Location = new System.Drawing.Point(31, 41);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(41, 16);
+            this.label1.TabIndex = 0;
+            this.label1.Text = "Login";
             // 
             // panelConnection
             // 
             this.panelConnection.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.panelConnection.Controls.Add(this.textBoxConnectionString);
+            this.panelConnection.Controls.Add(this.textBoxPortNumber);
+            this.panelConnection.Controls.Add(this.label26);
+            this.panelConnection.Controls.Add(this.textBoxHostName);
+            this.panelConnection.Controls.Add(this.label27);
             this.panelConnection.Controls.Add(this.buttonCancel);
             this.panelConnection.Controls.Add(this.buttonConnect);
-            this.panelConnection.Controls.Add(this.label3);
             this.panelConnection.Location = new System.Drawing.Point(0, 0);
             this.panelConnection.Name = "panelConnection";
             this.panelConnection.Size = new System.Drawing.Size(414, 203);
             this.panelConnection.TabIndex = 0;
             this.panelConnection.Visible = false;
             // 
-            // label3
+            // textBoxPortNumber
             // 
-            this.label3.AutoSize = true;
-            this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label3.Location = new System.Drawing.Point(13, 9);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(112, 16);
-            this.label3.TabIndex = 0;
-            this.label3.Text = "Connection String";
+            this.textBoxPortNumber.Location = new System.Drawing.Point(12, 118);
+            this.textBoxPortNumber.Name = "textBoxPortNumber";
+            this.textBoxPortNumber.Size = new System.Drawing.Size(390, 21);
+            this.textBoxPortNumber.TabIndex = 7;
+            this.textBoxPortNumber.Text = "33000";
+            // 
+            // label26
+            // 
+            this.label26.AutoSize = true;
+            this.label26.Location = new System.Drawing.Point(12, 87);
+            this.label26.Name = "label26";
+            this.label26.Size = new System.Drawing.Size(75, 15);
+            this.label26.TabIndex = 8;
+            this.label26.Text = "Port number";
+            // 
+            // textBoxHostName
+            // 
+            this.textBoxHostName.Location = new System.Drawing.Point(12, 50);
+            this.textBoxHostName.Name = "textBoxHostName";
+            this.textBoxHostName.ReadOnly = true;
+            this.textBoxHostName.Size = new System.Drawing.Size(390, 21);
+            this.textBoxHostName.TabIndex = 6;
+            this.textBoxHostName.Text = "127.0.0.1";
+            // 
+            // label27
+            // 
+            this.label27.AutoSize = true;
+            this.label27.Location = new System.Drawing.Point(12, 19);
+            this.label27.Name = "label27";
+            this.label27.Size = new System.Drawing.Size(90, 15);
+            this.label27.TabIndex = 5;
+            this.label27.Text = "Host IPAddress";
             // 
             // buttonCancel
             // 
@@ -222,16 +252,6 @@ namespace TestClientApp
             this.buttonConnect.UseVisualStyleBackColor = false;
             this.buttonConnect.Click += new System.EventHandler(this.buttonConnect_Click);
             // 
-            // textBoxConnectionString
-            // 
-            this.textBoxConnectionString.Location = new System.Drawing.Point(13, 38);
-            this.textBoxConnectionString.Multiline = true;
-            this.textBoxConnectionString.Name = "textBoxConnectionString";
-            this.textBoxConnectionString.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.textBoxConnectionString.Size = new System.Drawing.Size(389, 98);
-            this.textBoxConnectionString.TabIndex = 2;
-            this.textBoxConnectionString.Text = "\r\n";
-            // 
             // Form1
             // 
             this.AcceptButton = this.buttonSignIn;
@@ -255,6 +275,7 @@ namespace TestClientApp
             this.Opacity = 0.98D;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Client";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
             this.Load += new System.EventHandler(this.Form1_Load);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
@@ -282,8 +303,10 @@ namespace TestClientApp
         private System.Windows.Forms.Panel panelConnection;
         private System.Windows.Forms.Button buttonCancel;
         private System.Windows.Forms.Button buttonConnect;
-        private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.TextBox textBoxConnectionString;
+        private System.Windows.Forms.TextBox textBoxPortNumber;
+        private System.Windows.Forms.Label label26;
+        private System.Windows.Forms.TextBox textBoxHostName;
+        private System.Windows.Forms.Label label27;
     }
 }
 
