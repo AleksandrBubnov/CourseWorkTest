@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
+using System.Net.Sockets;
+using System.Runtime.Serialization.Formatters.Binary;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -29,15 +25,12 @@ namespace TestClientApp
         //        this.ProgName, MessageBoxButtons.OK,
         //        MessageBoxIcon.Information);
 
+
+        TcpClient client = null;
+
         public Form1()
         {
             InitializeComponent();
-
-            //string currentDir = Directory.GetParent(Directory.GetParent(Directory.GetCurrentDirectory())?.FullName)?.FullName;
-            //textBoxConnectionString.Text =
-            //    @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=" +
-            //    currentDir +
-            //    "\\TestDB.mdf;Integrated Security=True;Connect Timeout=30";
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -52,28 +45,19 @@ namespace TestClientApp
         }
         private void buttonSignIn_Click(object sender, EventArgs e)
         {
-            //Connection = textBoxConnectionString.Text;
-            //if (work == null)
-            //{
-            //    MessageBox.Show("no Connection!!!", this.Text, MessageBoxButtons.OK, MessageBoxIcon.Error);
-            //    return;
-            //}
-            //if (string.IsNullOrWhiteSpace(textBoxLogin.Text) || string.IsNullOrWhiteSpace(textBoxPassword.Text))
-            //{
-            //    MessageBox.Show("enter the Login and Password!!!", this.Text, MessageBoxButtons.OK, MessageBoxIcon.Error);
-            //    return;
-            //}
+            if (string.IsNullOrWhiteSpace(textBoxHostName.Text) ||
+                string.IsNullOrWhiteSpace(textBoxPortNumber.Text))
+            {
+                MessageBox.Show("String Connection IsNullOrWhiteSpace!!!", this.Text, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+            if (string.IsNullOrWhiteSpace(textBoxLogin.Text) || string.IsNullOrWhiteSpace(textBoxPassword.Text))
+            {
+                MessageBox.Show("enter the Login and Password!!!", this.Text, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
 
-            //try
-            //{
-            //    //user = repUs.FindAll(p => p.Login == textBoxLogin.Text && p.Password == textBoxLogin.Text).FirstOrDefault();
-            //    GetUserAdminAsync();
-            //}
-            //catch (Exception ex)
-            //{
-            //    MessageBox.Show(Environment.NewLine + ex.Message + Environment.NewLine, this.Text,
-            //        MessageBoxButtons.OK, MessageBoxIcon.Error);
-            //}
+            GetUserAsync();
         }
         private void textBoxLogin_TextChanged(object sender, EventArgs e)
         {
@@ -87,57 +71,86 @@ namespace TestClientApp
             else buttonSignIn.Enabled = true;
         }
 
-        private async void GetUserAdminAsync()
+        private async void GetUserAsync()
         {
-            await Task.Run(() => GetUserAdmin());
+            await Task.Run(() => GetUser());
         }
-        private void GetUserAdmin()
+        private void GetUser()
         {
-            //buttonSignIn.Invoke(new Action(() => buttonSignIn.Enabled = false));
-            //textBoxLogin.Invoke(new Action(() => textBoxLogin.Enabled = false));
-            //textBoxPassword.Invoke(new Action(() => textBoxPassword.Enabled = false));
-            //IEnumerable<DALServerDB.User> user1 = repUs.FindAll(p => p.Login == textBoxLogin.Text && p.IsAdmin == true);
-            //if (user1 != null) User = user1.FirstOrDefault(x => DALServerDB.Crypter.GetCrypt(x.Password) == textBoxPassword.Text);
-            //if (User == null)
-            //{
-            //    MessageBox.Show(Environment.NewLine + "user not found!!!", this.Text, MessageBoxButtons.OK, MessageBoxIcon.Error);
-            //    buttonSignIn.Invoke(new Action(() => buttonSignIn.Enabled = true));
-            //    textBoxLogin.Invoke(new Action(() => textBoxLogin.Enabled = true));
-            //    textBoxPassword.Invoke(new Action(() => textBoxPassword.Enabled = true));
-            //    return;
-            //}
-            //if (User.IsAdmin)
-            //{
-            //    this.Invoke(new Action(() =>
-            //    {
-            //        FormMain form = new FormMain(User, Connection);
-            //        form.Owner = this;
-            //        this.Hide();
-            //        form.ShowDialog();
-            //    }));
-            //}
-        }
+            menuStrip1.Invoke(new Action(() => menuStrip1.Enabled = false));
+            buttonSignIn.Invoke(new Action(() => buttonSignIn.Enabled = false));
+            textBoxLogin.Invoke(new Action(() => textBoxLogin.Enabled = false));
+            textBoxPassword.Invoke(new Action(() => textBoxPassword.Enabled = false));
 
+            DALServerDB.Data Data = new DALServerDB.Data();
+            Data.Login = textBoxLogin.Text;
+            Data.Password = textBoxPassword.Text;
+
+            string localAddr = textBoxHostName.Text;
+            int port = int.Parse(textBoxPortNumber.Text);
+            try
+            {
+                client = new TcpClient(localAddr, port);
+                using (NetworkStream stream = client.GetStream())
+                {
+                    //using (var ms = new MemoryStream())
+                    //{
+                    //    new BinaryFormatter().Serialize(ms, Data);
+                    //    buffer = ms.ToArray();
+                    //}
+                    // отправка сообщения
+                    //stream.Write(buffer, 0, buffer.Length);
+
+                    new BinaryFormatter().Serialize(client.GetStream(), Data);
+
+
+                    // получаем ответ
+                    Data = (DALServerDB.Data)new BinaryFormatter().Deserialize(stream);
+
+                    if (Data.Token == null)
+                    {
+                        MessageBox.Show(Environment.NewLine + "user not found!!!", this.Text, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        EnabledComponent();
+                        return;
+                    }
+                    else
+                    {
+                        this.Invoke(new Action(() =>
+                        {
+                            FormClientMain form = new FormClientMain(Data, stream, client);
+                            form.Owner = this;
+                            this.Hide();
+                            form.ShowDialog();
+                        }));
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                EnabledComponent();
+                MessageBox.Show(Environment.NewLine + ex.Message + Environment.NewLine, this.Text,
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            //catch { EnabledComponent(); }
+        }
+        private void EnabledComponent()
+        {
+            menuStrip1.Invoke(new Action(() => menuStrip1.Enabled = true));
+            buttonSignIn.Invoke(new Action(() => buttonSignIn.Enabled = true));
+            textBoxLogin.Invoke(new Action(() => textBoxLogin.Enabled = true));
+            textBoxPassword.Invoke(new Action(() => textBoxPassword.Enabled = true));
+        }
         private void buttonConnect_Click(object sender, EventArgs e)
         {
-            //if (string.IsNullOrWhiteSpace(textBoxConnectionString.Text))
-            //{
-            //    MessageBox.Show("enter a ConnectionString!!!", this.Text, MessageBoxButtons.OK, MessageBoxIcon.Error);
-            //    return;
-            //}
+            if (string.IsNullOrWhiteSpace(textBoxHostName.Text) ||
+                string.IsNullOrWhiteSpace(textBoxPortNumber.Text))
+            {
+                MessageBox.Show("String IsNullOrWhiteSpace!!!", this.Text, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
 
-            //panelConnectionString.Visible = false;
-            //groupBoxServer.Visible = true;
-            //try
-            //{
-            //    work = new RepositoryLibrary.GenericUnitOfWork(new DALServerDB.ServerContext(textBoxConnectionString.Text));
-            //    repUs = work.Repository<DALServerDB.User>();
-            //}
-            //catch (Exception ex)
-            //{
-            //    MessageBox.Show(Environment.NewLine + ex.Message + Environment.NewLine, this.Text,
-            //        MessageBoxButtons.OK, MessageBoxIcon.Error);
-            //}
+            panelConnection.Visible = false;
+            groupBoxClient.Visible = true;
         }
 
         private void buttonExit_Click(object sender, EventArgs e)
@@ -153,6 +166,11 @@ namespace TestClientApp
         {
             panelConnection.Visible = false;
             groupBoxClient.Visible = true;
+        }
+
+        private void Form1_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if (client != null) client?.Close();
         }
     }
 }
