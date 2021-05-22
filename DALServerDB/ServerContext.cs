@@ -264,6 +264,35 @@ namespace DALServerDB
         }
     }
 
+    /* 
+     * /// - лучше создать классы:
+     *          - TestForData (int Id, string Title, string Author, TimeSpan Time, +++ int QuestionQty, List<QuestionForData> Questions )
+     *          - QuestionForData (int QuestionId, int? AnswearId) // эти только в Data: string Question, List<AnswearForData> Answears)
+     *          - AnswearForData (int Id, string Description)
+     * 
+     * /// - Data - нужно доработать/изменить: 
+     *          - вместо некоторых bool лучше сделать enum
+     *          - классы что сверху с списке
+     *               - что должно позволить переходить клиенту переходить по вопросам не только в одном направлении
+     *               - соответственно изменить clientApp
+     * 
+     * /// - в Server:
+     *          - добавить numericDropDown на количество одновременно прослушиваемых соединений
+     *          - если была попытка сдачи теста значение isPassed изменить на = true
+     * /// - в Test: 
+     *          - Download: numericDropDown.readonly изменить на = false
+     *          - клиенту давать доступ сдавать тест только если isPassed = false
+     * /// - в Result: 
+     *          - просмотр результатов по группам, а не все вместе
+     *          - в бд добавить колонку bool isPassed сдавал ли тест?
+     *          - добавить возможность менять upload для isPassed - возможность ещё одной попытки сдачи теста
+     * /// - для бд добать таблицу Mark:
+     *          - по ней высчитывается оценка за тестирование
+     *          - возможность её редактирования и связывания с определённым тестом
+     * /// UI тоесть дизайнер тестов добавить в окно редактора тестов возможность добавления вопросов и ответов
+     * 
+     * /// /// /// /// /// возможно перейти на dapperORM 
+     */
     [Serializable]
     public class TestForData
     {
